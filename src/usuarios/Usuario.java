@@ -3,20 +3,20 @@ package usuarios;
 public class Usuario {
     protected String nome;
     protected String senha;
-    protected String nivelUsuário;
+    protected String nivelUsuario;
 
-    public Usuario(String nome, String senha, String nivelUsuário) {
+    public Usuario(String nome, String senha, String nivelUsuario) {
         this.nome = nome;
         this.senha = senha;
-        this.nivelUsuário = nivelUsuário;
+        this.nivelUsuario = nivelUsuario;
     }
 
     public String getNome() {
         return nome;
     }
 
-    public String getNivelUsuário() {
-        return nivelUsuário;
+    public String getNivelUsuario() {
+        return nivelUsuario;
     }
 
     public boolean autenticar(String senha) {
@@ -25,6 +25,6 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuário: " + this.getNome() + " - " + this.getNivelUsuário();
+        return "Usuário: " + this.getNome() + " - " + this.getNivelUsuario();
     }
 }

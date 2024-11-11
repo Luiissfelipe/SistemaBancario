@@ -11,8 +11,20 @@ public class Usuario {
         this.nivelUsuário = nivelUsuário;
     }
 
-    public void autenticar() {
-
+    public String getNome() {
+        return nome;
     }
 
+    public String getNivelUsuário() {
+        return nivelUsuário;
+    }
+
+    public boolean autenticar(String senha) {
+        return this.senha.equals(senha);
+    }
+
+    @Override
+    public String toString() {
+        return "Usuário: " + this.getNome() + " - " + this.getNivelUsuário();
+    }
 }

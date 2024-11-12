@@ -14,6 +14,15 @@ public class Login {
         return nivelUsuario;
     }
 
+    public void escolhaLogin() {
+        System.out.print("""
+                Digite uma opção para realizar o login:
+                [1] Sou funcionário do banco
+                [2] Sou cliente do banco
+                [0] Sair
+                """);
+    }
+
     public void realizarLogin(String nome, String senha) {
         try {
             //Se o nome for nulo ou vazio retornará um erro
@@ -49,7 +58,8 @@ public class Login {
         }
         //Tratamento para caso ocorra algum erro inesperado
         catch (Exception e) {
-            System.out.println("Erro durante o processo de login. Tente novamente.");
+            //System.out.println("Erro durante o processo de login. Tente novamente.");
+            e.printStackTrace();
         }
     }
 

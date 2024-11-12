@@ -2,6 +2,7 @@ package usuarios;
 
 import sistema.SistemaBanco;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Admin extends Usuario {
@@ -10,25 +11,28 @@ public class Admin extends Usuario {
         super(nome, senha, "admin");
     }
 
-    private void cadastrarGerente(String nome, String senha) {
+    private void cadastrarGerente(String nome, String senha) throws IOException {
         Gerente novoGerente = new Gerente(nome, senha);
         SistemaBanco.adicionarUsuario(novoGerente);
+        SistemaBanco.salvarUsuario(novoGerente);
         System.out.printf("Gerente %s cadastrado com sucesso.\n\n", nome);
     }
 
-    private void cadastrarBancario(String nome, String senha) {
+    private void cadastrarBancario(String nome, String senha) throws IOException {
         Bancario novoBancario = new Bancario(nome, senha);
         SistemaBanco.adicionarUsuario(novoBancario);
+        SistemaBanco.salvarUsuario(novoBancario);
         System.out.printf("Bancário %s cadastrado com sucesso.\n\n", nome);
     }
 
-    public void cadastrarCorrenista(String nome, String senha) {
+    public void cadastrarCorrenista(String nome, String senha) throws IOException {
         Correntista novoCorrentista = new Correntista(nome, senha);
         SistemaBanco.adicionarUsuario(novoCorrentista);
+        SistemaBanco.salvarUsuario(novoCorrentista);
         System.out.printf("Correntista %s cadastrado com sucesso.\n\n", nome);
     }
 
-    public void menuAdmin(Scanner input) {
+    public void menuAdmin(Scanner input) throws IOException {
         int opcao = 0;
         do {
             System.out.print("""
@@ -84,7 +88,7 @@ public class Admin extends Usuario {
                         System.out.println("A senha não pode ser vazia nem conter espaços. Tente novamente.\n");
                         break;
                     }
-                    cadastrarBancario(nomeCorrentista, senhaCorrentista);
+                    cadastrarCorrenista(nomeCorrentista, senhaCorrentista);
                     break;
                 case 0:
                     break;

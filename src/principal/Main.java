@@ -6,23 +6,43 @@ import usuarios.Admin;
 import usuarios.Gerente;
 import usuarios.Usuario;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         Scanner input = new Scanner(System.in);
         Login login = new Login();
-        Admin user = new Admin("admin", "1234");
-        SistemaBanco.adicionarUsuario(user);
-        user.cadastrarCorrenista("Samuel", "1234");
+        SistemaBanco.inicializarArquivo();
+        SistemaBanco.carregarUsuarios();
 
+/*
+        int escolha = 0;
+        do {
+            login.escolhaLogin();
+            escolha = input.nextInt();
+            switch (escolha) {
+                case 1:
+                    System.out.println("Você é um funcionário do banco.");
+
+                    break;
+                case 2:
+                    System.out.println("Você é cliente do banco.");
+                    break;
+                case 0:
+                    break;
+                default:
+                    System.out.println("Escolha uma opção válida.");
+            }
+        } while (escolha != 0);
+*/
         while (!login.isLoginRealizado()) {
             System.out.println("Digite o nome: ");
-            String usuario = input.nextLine();
+            String nome = input.nextLine();
             System.out.println("Digite a senha: ");
             String senha = input.nextLine();
-            login.realizarLogin(usuario, senha);
+            login.realizarLogin(nome, senha);
         }
 
         Usuario usuario = SistemaBanco.getUsuarios().get(login.getNome());

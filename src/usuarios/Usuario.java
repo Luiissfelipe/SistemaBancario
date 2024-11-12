@@ -15,6 +15,10 @@ public class Usuario {
         return nome;
     }
 
+    public String getSenha() {
+        return senha;
+    }
+
     public String getNivelUsuario() {
         return nivelUsuario;
     }

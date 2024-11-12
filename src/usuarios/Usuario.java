@@ -1,5 +1,7 @@
 package usuarios;
 
+import java.util.Scanner;
+
 public class Usuario {
     protected String nome;
     protected String senha;

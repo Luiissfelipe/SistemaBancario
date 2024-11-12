@@ -14,25 +14,16 @@ public class Login {
         return nivelUsuario;
     }
 
-    public void escolhaLogin() {
-        System.out.print("""
-                Digite uma opção para realizar o login:
-                [1] Sou funcionário do banco
-                [2] Sou cliente do banco
-                [0] Sair
-                """);
-    }
-
     public void realizarLogin(String nome, String senha) {
         try {
             //Se o nome for nulo ou vazio retornará um erro
             if (nome == null || nome.isEmpty()) {
-                System.out.println("O nome não pode estar vazio.");
+                System.out.println("O nome não pode estar vazio.\n");
                 return;
             }
             //Se a senha for nula, vazia, ou tiver espaços retornará um erro
             if (senha == null || senha.isEmpty() || senha.contains(" ")) {
-                System.out.println("Senha não pode estar vazia e não deve conter espaços.");
+                System.out.println("Senha não pode estar vazia e/ou não deve conter espaços.\n");
                 return;
             }
             //Lendo o nome e senha, caso esteja tudo certo
@@ -40,26 +31,25 @@ public class Login {
             this.senha = senha;
             //Declarando nome do banco de dados
             var usuarioEncontrado = SistemaBanco.getUsuarios().get(this.nome);
-            this.nivelUsuario = usuarioEncontrado.getNivelUsuario();
 
             //Verificação se o nome existe e se a senha esta correta
             if (usuarioEncontrado != null) {
                 if (usuarioEncontrado.autenticar(this.senha)) {
                     System.out.println("Login realizado.\n");
+                    this.nivelUsuario = usuarioEncontrado.getNivelUsuario();
                     this.loginRealizado = true;
                 } else {
-                    System.out.println("Senha incorreta.");
+                    System.out.println("Senha incorreta.\n");
                     this.loginRealizado = false;
                 }
             } else {
-                System.out.println("Usuário não encotrado.");
+                System.out.println("Usuário não encotrado.\n");
                 this.loginRealizado = false;
             }
         }
         //Tratamento para caso ocorra algum erro inesperado
         catch (Exception e) {
-            //System.out.println("Erro durante o processo de login. Tente novamente.");
-            e.printStackTrace();
+            System.out.println("Erro durante o processo de login. Tente novamente.");
         }
     }
 

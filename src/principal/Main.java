@@ -17,26 +17,6 @@ public class Main {
         SistemaBanco.inicializarArquivo();
         SistemaBanco.carregarUsuarios();
 
-/*
-        int escolha = 0;
-        do {
-            login.escolhaLogin();
-            escolha = input.nextInt();
-            switch (escolha) {
-                case 1:
-                    System.out.println("Você é um funcionário do banco.");
-
-                    break;
-                case 2:
-                    System.out.println("Você é cliente do banco.");
-                    break;
-                case 0:
-                    break;
-                default:
-                    System.out.println("Escolha uma opção válida.");
-            }
-        } while (escolha != 0);
-*/
         while (!login.isLoginRealizado()) {
             System.out.println("Digite o nome: ");
             String nome = input.nextLine();
@@ -50,11 +30,13 @@ public class Main {
         switch (login.getNivelUsuario()) {
             case "admin":
                 Admin admin = (Admin) usuario;
-                admin.menuAdmin(input);
+                admin.menuAdmin();
                 System.out.println("Sistema finalizado.");
                 break;
             case "gerente":
-                System.out.printf("Usuário %s é um gerente\n", login.getNome());
+                Gerente gerente = (Gerente) usuario;
+                gerente.menuGerente();
+                System.out.println("Sistema finalizado.");
                 break;
             case "bancario":
                 System.out.printf("Usuário %s é um bancário\n", login.getNome());

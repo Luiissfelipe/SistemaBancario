@@ -11,28 +11,101 @@ public class Admin extends Usuario {
         super(nome, senha, "admin");
     }
 
-    private void cadastrarGerente(String nome, String senha) throws IOException {
-        Gerente novoGerente = new Gerente(nome, senha);
+    private void cadastrarGerente() throws IOException {
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("Digite o nome do gerente:");
+        String nomeGerente = input.nextLine();
+        if (nomeGerente.isEmpty()) {
+            System.out.println("O nome do gerente não pode ser vazio. Tente novamente.\n");
+            return;
+        }
+        if (SistemaBanco.getUsuarios().get(nomeGerente) != null) {
+            System.out.println("Já existe uma conta com esse nome.\n");
+            return;
+        }
+
+        System.out.println("Digite a senha do gerente:");
+        String senhaGerente = input.nextLine();
+        if (senhaGerente.isEmpty() || senhaGerente.contains(" ")) {
+            System.out.println("A senha não pode ser vazia nem conter espaços. Tente novamente.\n");
+            return;
+        }
+        if (senhaGerente.length() < 4 || senhaGerente.length() > 7) {
+            System.out.println("A senha deve conter entre 4 e 7 caracteres.\n");
+            return;
+        }
+
+        Gerente novoGerente = new Gerente(nomeGerente, senhaGerente);
         SistemaBanco.adicionarUsuario(novoGerente);
         SistemaBanco.salvarUsuario(novoGerente);
-        System.out.printf("Gerente %s cadastrado com sucesso.\n\n", nome);
+        System.out.printf("Gerente %s cadastrado com sucesso.\n\n", nomeGerente);
     }
 
-    private void cadastrarBancario(String nome, String senha) throws IOException {
-        Bancario novoBancario = new Bancario(nome, senha);
+    private void cadastrarBancario() throws IOException {
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("Digite o nome do bancário:");
+        String nomeBancario = input.nextLine();
+        if (nomeBancario.isEmpty()) {
+            System.out.println("O nome do bancário não pode ser vazio. Tente novamente.\n");
+            return;
+        }
+        if (SistemaBanco.getUsuarios().get(nomeBancario) != null) {
+            System.out.println("Já existe uma conta com esse nome.\n");
+            return;
+        }
+
+        System.out.println("Digite a senha do bancário:");
+        String senhaBancario = input.nextLine();
+        if (senhaBancario.isEmpty() || senhaBancario.contains(" ")) {
+            System.out.println("A senha não pode ser vazia nem conter espaços. Tente novamente.\n");
+            return;
+        }
+        if (senhaBancario.length() < 4 || senhaBancario.length() > 7) {
+            System.out.println("A senha deve conter entre 4 e 7 caracteres.\n");
+            return;
+        }
+
+        Bancario novoBancario = new Bancario(nomeBancario, senhaBancario);
         SistemaBanco.adicionarUsuario(novoBancario);
         SistemaBanco.salvarUsuario(novoBancario);
-        System.out.printf("Bancário %s cadastrado com sucesso.\n\n", nome);
+        System.out.printf("Bancário %s cadastrado com sucesso.\n\n", nomeBancario);
     }
 
-    public void cadastrarCorrenista(String nome, String senha) throws IOException {
-        Correntista novoCorrentista = new Correntista(nome, senha);
+    private void cadastrarCorrentista() throws IOException {
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("Digite o nome do correntista:");
+        String nomeCorrentista = input.nextLine();
+        if (nomeCorrentista.isEmpty()) {
+            System.out.println("O nome do correntista não pode ser vazio. Tente novamente.\n");
+            return;
+        }
+        if (SistemaBanco.getUsuarios().get(nomeCorrentista) != null) {
+            System.out.println("Já existe uma conta com esse nome.\n");
+            return;
+        }
+
+        System.out.println("Digite a senha do correntista:");
+        String senhaCorrentista = input.nextLine();
+        if (senhaCorrentista.isEmpty() || senhaCorrentista.contains(" ")) {
+            System.out.println("A senha não pode ser vazia nem conter espaços. Tente novamente.\n");
+            return;
+        }
+        if (senhaCorrentista.length() < 4 || senhaCorrentista.length() > 7) {
+            System.out.println("A senha deve conter entre 4 e 7 caracteres.\n");
+            return;
+        }
+
+        Correntista novoCorrentista = new Correntista(nomeCorrentista, senhaCorrentista);
         SistemaBanco.adicionarUsuario(novoCorrentista);
         SistemaBanco.salvarUsuario(novoCorrentista);
-        System.out.printf("Correntista %s cadastrado com sucesso.\n\n", nome);
+        System.out.printf("Correntista %s cadastrado com sucesso.\n\n", nomeCorrentista);
     }
 
-    public void menuAdmin(Scanner input) throws IOException {
+    public void menuAdmin() throws IOException {
+        Scanner input = new Scanner(System.in);
         int opcao = 0;
         do {
             System.out.print("""
@@ -40,63 +113,38 @@ public class Admin extends Usuario {
                         [1] Cadastrar gerente
                         [2] Cadastrar bancario
                         [3] Cadastrar correntista
+                        [4] Funções gerente
                         [0] Sair
                         """);
-            opcao = input.nextInt();
-            input.nextLine();
-            switch (opcao) {
-                case 1:
-                    System.out.println("Digite o nome do gerente:");
-                    String nomeGerente = input.nextLine();
-                    if (nomeGerente.isEmpty()) {
-                        System.out.println("O nome do gerente não pode ser vazio. Tente novamente.\n");
+            try {
+                opcao = input.nextInt();
+                input.nextLine();
+                switch (opcao) {
+                    case 1:
+                        cadastrarGerente();
                         break;
-                    }
-                    System.out.println("Digite a senha do gerente:");
-                    String senhaGerente = input.nextLine();
-                    if (senhaGerente.isEmpty() || senhaGerente.contains(" ")) {
-                        System.out.println("A senha não pode ser vazia nem conter espaços. Tente novamente.\n");
+                    case 2:
+                        cadastrarBancario();
                         break;
-                    }
-                    cadastrarGerente(nomeGerente, senhaGerente);
-                    break;
-                case 2:
-                    System.out.println("Digite o nome do bancário:");
-                    String nomeBancario = input.nextLine();
-                    if (nomeBancario.isEmpty()) {
-                        System.out.println("O nome do bancário não pode ser vazio. Tente novamente.\n");
+                    case 3:
+                        cadastrarCorrentista();
                         break;
-                    }
-                    System.out.println("Digite a senha do bancário:");
-                    String senhaBancario = input.nextLine();
-                    if (senhaBancario.isEmpty() || senhaBancario.contains(" ")) {
-                        System.out.println("A senha não pode ser vazia nem conter espaços. Tente novamente.\n");
+
+                    case 4:
+                        Gerente gerente = new Gerente("admin", "admin");
+                        gerente.menuGerente();
                         break;
-                    }
-                    cadastrarBancario(nomeBancario, senhaBancario);
-                    break;
-                case 3:
-                    System.out.println("Digite o nome do correntista:");
-                    String nomeCorrentista = input.nextLine();
-                    if (nomeCorrentista.isEmpty()) {
-                        System.out.println("O nome do correntista não pode ser vazio. Tente novamente.\n");
+                    case 0:
                         break;
-                    }
-                    System.out.println("Digite a senha do correntista:");
-                    String senhaCorrentista = input.nextLine();
-                    if (senhaCorrentista.isEmpty() || senhaCorrentista.contains(" ")) {
-                        System.out.println("A senha não pode ser vazia nem conter espaços. Tente novamente.\n");
-                        break;
-                    }
-                    cadastrarCorrenista(nomeCorrentista, senhaCorrentista);
-                    break;
-                case 0:
-                    break;
-                default:
-                    System.out.println("Opção invalida\n");
+                    default:
+                        System.out.println("Opção invalida\n");
+                }
+            }catch (java.util.InputMismatchException e) {
+                System.out.println("Entrada inválida. Por favor, insira um número.\n");
+                input.nextLine();
             }
         } while (opcao != 0);
-
+        input.close();
     }
 
 }

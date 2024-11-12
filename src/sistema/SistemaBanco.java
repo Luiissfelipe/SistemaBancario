@@ -51,10 +51,10 @@ public class SistemaBanco {
                     case "gerente":
                         adicionarUsuario(new Gerente(nome,senha));
                         break;
-                    case "Bancario":
+                    case "bancario":
                         adicionarUsuario(new Bancario(nome, senha));
                         break;
-                    case "Correntista":
+                    case "correntista":
                         adicionarUsuario(new Correntista(nome, senha));
                         break;
                 }

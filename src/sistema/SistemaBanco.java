@@ -8,7 +8,8 @@ import java.util.Map;
 
 public class SistemaBanco {
     private static Map<String, Usuario> usuarios = new HashMap<>();
-    private static final String ARQUIVO_CAMINHO = "src/usuarios/usuarios.csv";
+    //private static Map<String, Conta> contas = new HashMap<>();
+    private static final String USUARIOS_TXT = "src/usuarios/usuarios.txt";
 
     public static Map<String, Usuario> getUsuarios() {
         return usuarios;
@@ -19,7 +20,7 @@ public class SistemaBanco {
     }
 
     public static void inicializarArquivo() throws IOException {
-        File arquivo = new File(ARQUIVO_CAMINHO);
+        File arquivo = new File(USUARIOS_TXT);
 
         if (!arquivo.exists()) {
             try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo))){
@@ -30,13 +31,13 @@ public class SistemaBanco {
     }
 
     public static void salvarUsuario(Usuario usuario) throws IOException {
-        try (BufferedWriter escritor = new BufferedWriter(new FileWriter("src/usuarios/usuarios.csv", true))) {
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(USUARIOS_TXT, true))) {
             escritor.write(usuario.getNivelUsuario() + "," + usuario.getNome() + "," + usuario.getSenha() + "\n");
         }
     }
 
     public static void carregarUsuarios() throws IOException {
-        try (BufferedReader leitor = new BufferedReader(new FileReader("src/usuarios/usuarios.csv"))){
+        try (BufferedReader leitor = new BufferedReader(new FileReader(USUARIOS_TXT))){
             String linha;
             while ((linha = leitor.readLine()) != null) {
                 String[] partes = linha.split(",");

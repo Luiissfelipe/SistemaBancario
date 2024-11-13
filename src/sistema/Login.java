@@ -1,8 +1,9 @@
 package sistema;
 
+import java.util.Scanner;
+
 public class Login {
     private String nome;
-    private String senha;
     private String nivelUsuario;
     private boolean loginRealizado;
 
@@ -14,47 +15,39 @@ public class Login {
         return nivelUsuario;
     }
 
-    public void realizarLogin(String nome, String senha) {
-        try {
-            //Se o nome for nulo ou vazio retornará um erro
+    public void realizarlogin() {
+        Scanner input = new Scanner(System.in);
+        while (!loginRealizado) {
+            System.out.println("Digite o nome: ");
+            String nome = input.nextLine();
             if (nome == null || nome.isEmpty()) {
-                System.out.println("O nome não pode estar vazio.\n");
-                return;
+                System.out.println("O nome não pode estar vazio. Tente novamente.\n");
+                continue;
             }
-            //Se a senha for nula, vazia, ou tiver espaços retornará um erro
-            if (senha == null || senha.isEmpty() || senha.contains(" ")) {
-                System.out.println("Senha não pode estar vazia e/ou não deve conter espaços.\n");
-                return;
+            var usuarioEncontrado = SistemaBanco.getUsuarios().get(nome);
+            if (usuarioEncontrado == null) {
+                System.out.println("Usuário não encotrado. Tente novamente.\n");
+                continue;
             }
-            //Lendo o nome e senha, caso esteja tudo certo
-            this.nome = nome;
-            this.senha = senha;
-            //Declarando nome do banco de dados
-            var usuarioEncontrado = SistemaBanco.getUsuarios().get(this.nome);
 
-            //Verificação se o nome existe e se a senha esta correta
-            if (usuarioEncontrado != null) {
-                if (usuarioEncontrado.autenticar(this.senha)) {
-                    System.out.println("Login realizado.\n");
+            while (!loginRealizado) {
+                System.out.println("Digite a senha: ");
+                String senha = input.nextLine();
+
+                if (senha == null || senha.isEmpty() || senha.contains(" ")) {
+                    System.out.println("Senha não pode estar vazia e/ou conter espaços. Tente novamente.\n");
+                    continue;  // Recomeça o loop para nova tentativa de senha
+                }
+
+                if (usuarioEncontrado.autenticar(senha)) {
+                    System.out.println("Login realizado com sucesso.\n");
+                    this.nome = nome;
                     this.nivelUsuario = usuarioEncontrado.getNivelUsuario();
                     this.loginRealizado = true;
                 } else {
-                    System.out.println("Senha incorreta.\n");
-                    this.loginRealizado = false;
+                    System.out.println("Senha incorreta. Tente novamente.\n");
                 }
-            } else {
-                System.out.println("Usuário não encotrado.\n");
-                this.loginRealizado = false;
             }
         }
-        //Tratamento para caso ocorra algum erro inesperado
-        catch (Exception e) {
-            System.out.println("Erro durante o processo de login. Tente novamente.");
-        }
-    }
-
-    //Metodo para saber se o login foi realizado
-    public boolean isLoginRealizado() {
-        return loginRealizado;
     }
 }

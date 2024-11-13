@@ -73,11 +73,11 @@ public class Gerente extends Usuario {
         System.out.printf("Correntista %s cadastrado com sucesso.\n\n", nomeCorrentista);
     }
 
-    public void configurarLimiteContasAdicionais() {
+    private void configurarLimiteContasAdicionais() {
         System.out.println("Configurando limites de contas adicionais");
     }
 
-    public void criarContaCorrenteAdicional() {
+    private void criarContaCorrenteAdicional() {
         System.out.println("Criando conta corrente adicional.");
     }
 

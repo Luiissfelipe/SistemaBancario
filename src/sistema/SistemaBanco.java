@@ -9,7 +9,7 @@ import java.util.Map;
 public class SistemaBanco {
     private static Map<String, Usuario> usuarios = new HashMap<>();
     //private static Map<String, Conta> contas = new HashMap<>();
-    private static final String USUARIOS_TXT = "src/usuarios/usuarios.txt";
+    private static String USUARIOS_TXT = "src/usuarios/usuarios.txt";
 
     public static Map<String, Usuario> getUsuarios() {
         return usuarios;

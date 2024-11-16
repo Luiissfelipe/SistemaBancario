@@ -1,5 +1,7 @@
 package sistema;
 
+import usuarios.Usuario;
+
 import java.util.Scanner;
 
 public class Login {
@@ -36,7 +38,7 @@ public class Login {
                 continue;
             }
             //Verificando se o nome digitado existe no sistema
-            var usuarioEncontrado = SistemaBanco.getUsuarios().get(nome);
+            Usuario usuarioEncontrado = SistemaBanco.getUsuarios().get(nome);
             if (usuarioEncontrado == null) {
                 System.out.println("Usuário não encotrado. Tente novamente.\n");
                 continue;

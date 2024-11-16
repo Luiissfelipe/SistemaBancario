@@ -2,3 +2,4 @@ NivelUsuario,Nome,Senha
 admin,admin,1234
 gerente,abner,12345
 bancario,luis,1234
+correntista,henrique,1234

@@ -2,10 +2,8 @@ package principal;
 
 import sistema.Login;
 import sistema.SistemaBanco;
-import usuarios.Admin;
-import usuarios.Bancario;
-import usuarios.Gerente;
-import usuarios.Usuario;
+import usuarios.*;
+
 
 import java.io.IOException;
 

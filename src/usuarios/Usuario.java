@@ -37,6 +37,6 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuário: " + this.getNome() + " - " + this.getNivelUsuario();
+        return "Usuário: " + this.getNome() + " - " + this.getSenha() + " [" + this.getNivelUsuario() + "]";
     }
 }

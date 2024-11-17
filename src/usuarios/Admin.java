@@ -51,7 +51,7 @@ public class Admin extends Usuario {
         //Chamando o metodo para adicionar o Usuario criado
         SistemaBanco.adicionarUsuario(novoGerente);
         //Chamando o metodo para salvar no arquivo de dados o Usuario criado
-        SistemaBanco.salvarUsuario(novoGerente);
+        //SistemaBanco.salvarUsuario(novoGerente);
         System.out.printf("Gerente %s cadastrado com sucesso.\n\n", nomeGerente);
     }
 

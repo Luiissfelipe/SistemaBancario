@@ -11,8 +11,10 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         Login login = new Login();
-        SistemaBanco.inicializarArquivo();
+        SistemaBanco.inicializarArquivoUsuarios();
+        SistemaBanco.inicializarArquivoContas();
         SistemaBanco.carregarUsuarios();
+        SistemaBanco.carregarContas();
 
         login.realizarlogin();
         Usuario usuario = SistemaBanco.getUsuarios().get(login.getNome());

@@ -40,7 +40,7 @@ public class Login {
             //Verificando se o nome digitado existe no sistema
             Usuario usuarioEncontrado = SistemaBanco.getUsuarios().get(nome);
             if (usuarioEncontrado == null) {
-                System.out.println("Usuário não encotrado. Tente novamente.\n");
+                System.out.println("Usuário não encontrado. Tente novamente.\n");
                 continue;
             }
 

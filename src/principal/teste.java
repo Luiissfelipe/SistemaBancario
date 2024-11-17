@@ -1,13 +1,25 @@
 package principal;
 
+import contas.Conta;
 import sistema.SistemaBanco;
-import usuarios.Gerente;
+import usuarios.Admin;
+import usuarios.Correntista;
 
 import java.io.IOException;
+import java.util.Random;
 
 public class teste {
     public static void main(String[] args) throws IOException {
+
+        SistemaBanco.inicializarArquivoUsuarios();
+        SistemaBanco.inicializarArquivoContas();
         SistemaBanco.carregarUsuarios();
-        System.out.println(SistemaBanco.getUsuarios());
+        SistemaBanco.carregarContas();
+
+        Correntista correntista = (Correntista) SistemaBanco.getUsuarios().get("joel");
+
+
+        System.out.println(SistemaBanco.getContas().get("CC36109").getSaldo());
+
     }
 }

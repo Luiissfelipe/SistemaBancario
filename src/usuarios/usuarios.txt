@@ -1,5 +1,2 @@
-NivelUsuario,Nome,Senha
+NivelUsuario,Nome,Senha,ContaCorrente,ContaPoupanca,ContaAdicional
 admin,admin,1234
-gerente,abner,12345
-bancario,luis,1234
-correntista,henrique,1234

@@ -138,7 +138,6 @@ public class Gerente extends Usuario {
                 double limiteChequeEspecial = input.nextDouble();
                 contaCorrente.setLimiteChequeEspecial(limiteChequeEspecial);
                 SistemaBanco.adicionarConta(contaCorrente);
-                SistemaBanco.salvarConta(contaCorrente);
                 SistemaBanco.adicionarUsuario(correntista);
                 System.out.printf("Conta corrente criada com um limite de R$ %.2f para cheque especial.\n", limiteChequeEspecial);
                 break;
@@ -146,7 +145,6 @@ public class Gerente extends Usuario {
                 contaCorrente.setChequeEspecial(false);
                 contaCorrente.setLimiteChequeEspecial(0);
                 SistemaBanco.adicionarConta(contaCorrente);
-                SistemaBanco.salvarConta(contaCorrente);
                 SistemaBanco.adicionarUsuario(correntista);
                 System.out.println("Conta corrente criada sem opção de cheque especial.");
                 break;
@@ -163,7 +161,6 @@ public class Gerente extends Usuario {
         }
         ContaPoupanca contaPoupanca = new ContaPoupanca(numContaPoupanca, correntista.getNome(), correntista.getSenha());
         SistemaBanco.adicionarConta(contaPoupanca);
-        SistemaBanco.salvarConta(contaPoupanca);
         SistemaBanco.adicionarUsuario(correntista);
         System.out.println("Conta poupança criada com sucesso.");
     }

@@ -1,2 +1,5 @@
 NivelUsuario,Nome,Senha,ContaCorrente,ContaPoupanca,ContaAdicional
+bancario,luis,1234
+correntista,joao,1234,CC47098,CP32900,null
 admin,admin,1234
+gerente,abner,1234

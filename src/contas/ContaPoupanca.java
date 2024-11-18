@@ -19,7 +19,6 @@ public class ContaPoupanca extends Conta{
             saldo -= valorSaque;
             contaPoupanca.setSaldo(saldo);
             SistemaBanco.adicionarConta(contaPoupanca);
-            SistemaBanco.salvarConta(contaPoupanca);
             System.out.println("Saque realizado com sucesso.");
             System.out.printf("Seu novo saldo será de R$ %.2f\n", contaPoupanca.getSaldo());
         } else {

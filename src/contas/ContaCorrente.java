@@ -41,7 +41,6 @@ public class ContaCorrente extends Conta{
                 saldo -= valorSaque;
                 contaCorrente.setSaldo(saldo);
                 SistemaBanco.adicionarConta(contaCorrente);
-                SistemaBanco.salvarConta(contaCorrente);
                 System.out.println("Saque realizado com sucesso.");
                 System.out.printf("Seu novo saldo será de R$ %.2f\n", contaCorrente.getSaldo());
             } else {
@@ -52,7 +51,6 @@ public class ContaCorrente extends Conta{
                 saldo -= valorSaque;
                 contaCorrente.setSaldo(saldo);
                 SistemaBanco.adicionarConta(contaCorrente);
-                SistemaBanco.salvarConta(contaCorrente);
                 System.out.println("Saque realizado com sucesso.");
                 System.out.printf("Seu novo saldo será de R$ %.2f\n", contaCorrente.getSaldo());
             } else {

@@ -55,7 +55,6 @@ public abstract class Conta {
         conta.setSaldo(novoSaldo);
         System.out.println("Deposito realizado com sucesso.");
         System.out.printf("Seu novo saldo será de R$ %.2f\n", conta.getSaldo());
-        SistemaBanco.salvarConta(conta);
         SistemaBanco.adicionarConta(conta);
     }
 

@@ -30,6 +30,7 @@ public class SistemaBanco {
 
     public static void adicionarConta(Conta conta) throws IOException{
         contas.put(conta.getNumeroConta(), conta);
+        salvarContas(contas);
     }
 
     public static void inicializarArquivoUsuarios() throws IOException {
@@ -69,15 +70,19 @@ public class SistemaBanco {
         }
     }
 
-    public static void salvarConta(Conta conta) throws IOException {
-        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(CONTAS_TXT, true))) {
+    public static void salvarContas(Map<String, Conta> contas) throws IOException {
+        try (BufferedWriter escritor = new BufferedWriter(new FileWriter(CONTAS_TXT))) {
+            escritor.write("NumeroConta,TipoConta,Titular,Senha,Saldo,ChequeEspecial,LimiteCheque\n");
 
-            if (conta instanceof ContaCorrente contaC) {
-                escritor.write(contaC.getNumeroConta() + "," + contaC.getTipo() + "," + contaC.getTitular() + "," + contaC.getSenha()
-                        + "," + contaC.getSaldo() + "," + contaC.isChequeEspecial() + "," + contaC.getLimiteChequeEspecial() +"\n");
-            }else {
-                escritor.write(conta.getNumeroConta() + "," + conta.getTipo() + "," + conta.getTitular() + "," + conta.getSenha()
-                        + "," + conta.getSaldo() + "\n");
+            for (Map.Entry<String, Conta> entrada : contas.entrySet()) {
+                Conta conta = entrada.getValue();
+                if (conta instanceof ContaCorrente contaC) {
+                    escritor.write(contaC.getNumeroConta() + "," + contaC.getTipo() + "," + contaC.getTitular() + "," + contaC.getSenha()
+                            + "," + contaC.getSaldo() + "," + contaC.isChequeEspecial() + "," + contaC.getLimiteChequeEspecial() +"\n");
+                }else {
+                    escritor.write(conta.getNumeroConta() + "," + conta.getTipo() + "," + conta.getTitular() + "," + conta.getSenha()
+                            + "," + conta.getSaldo() + "\n");
+                }
             }
         }
     }

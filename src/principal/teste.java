@@ -1,6 +1,7 @@
 package principal;
 
 import contas.Conta;
+import contas.ContaCorrente;
 import sistema.SistemaBanco;
 import usuarios.Admin;
 import usuarios.Correntista;
@@ -16,10 +17,10 @@ public class teste {
         SistemaBanco.carregarUsuarios();
         SistemaBanco.carregarContas();
 
-        Correntista correntista = (Correntista) SistemaBanco.getUsuarios().get("joel");
+        ContaCorrente contaCorrente = (ContaCorrente) SistemaBanco.getContas().get("luis");
 
 
-        System.out.println(SistemaBanco.getContas().get("CC36109").getSaldo());
+        System.out.println(contaCorrente);
 
     }
 }

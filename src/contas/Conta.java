@@ -53,14 +53,7 @@ public abstract class Conta {
     public void depositar(Conta conta, double valorDeposito) throws IOException {
         double novoSaldo = conta.getSaldo() + valorDeposito;
         conta.setSaldo(novoSaldo);
-        System.out.println("Deposito realizado com sucesso.");
-        System.out.printf("Seu novo saldo será de R$ %.2f\n", conta.getSaldo());
         SistemaBanco.adicionarConta(conta);
-    }
-
-    public void transferir(Conta contaOrigemEncontrada, Conta contaDestinoEncontrada, Double valorTransferencia) throws IOException {
-        contaOrigemEncontrada.sacar(contaOrigemEncontrada, valorTransferencia);
-        contaDestinoEncontrada.depositar(contaDestinoEncontrada,valorTransferencia);
     }
 
     @Override

@@ -59,6 +59,39 @@ public class ContaCorrente extends Conta{
         }
     }
 
+    public void transferir(Conta contaOrigemEncontrada, Conta contaDestinoEncontrada, Double valorTransferencia) throws IOException {
+        ContaCorrente contaCorrente = (ContaCorrente) contaOrigemEncontrada;
+        double saldo = contaCorrente.getSaldo();
+        boolean isChequeEspecial = contaCorrente.isChequeEspecial();
+        double limiteChequeEspecial = contaCorrente.getLimiteChequeEspecial();
+
+        if (isChequeEspecial) {
+            if (saldo + limiteChequeEspecial >= valorTransferencia) {
+                saldo -= valorTransferencia;
+                contaCorrente.setSaldo(saldo);
+                SistemaBanco.adicionarConta(contaCorrente);
+                depositar(contaDestinoEncontrada, valorTransferencia);
+                System.out.println("Transferência realizada com sucesso.");
+                System.out.printf("Novo saldo da conta de origem: R$ %.2f\n", contaOrigemEncontrada.getSaldo());
+                System.out.printf("Novo saldo da conta de destino: R$ %.2f\n", contaDestinoEncontrada.getSaldo());
+            } else {
+                System.out.println("Saldo insuficiente.");
+            }
+        }else {
+            if (saldo >= valorTransferencia) {
+                saldo -= valorTransferencia;
+                contaCorrente.setSaldo(saldo);
+                SistemaBanco.adicionarConta(contaCorrente);
+                depositar(contaDestinoEncontrada, valorTransferencia);
+                System.out.println("Transferência realizada com sucesso.");
+                System.out.printf("Novo saldo da conta de origem: R$ %.2f\n", contaOrigemEncontrada.getSaldo());
+                System.out.printf("Novo saldo da conta de destino: R$ %.2f\n", contaDestinoEncontrada.getSaldo());
+            } else {
+                System.out.println("Saldo insuficiente.");
+            }
+        }
+    }
+
     @Override
     public String toString() {
         return "Titular: " + this.getTitular() + "," + this.getNumeroConta() + "," + this.getSenha() + "," + this.getSaldo()

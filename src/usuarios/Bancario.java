@@ -74,6 +74,10 @@ public class Bancario extends Usuario{
             System.out.println("Conta inexistente.");
             return;
         }
+        if (contaEncontrada.getTipo().equals("adicional")) {
+            System.out.println("Você não pode depositar em uma conta adicional.");
+            return;
+        }
 
         System.out.println("Informe o valor do depósito:");
         double valorDeposito = input.nextDouble();
@@ -82,6 +86,8 @@ public class Bancario extends Usuario{
             System.out.println("O valor do deposito deve ser maior que 0.");
         } else {
             contaEncontrada.depositar(contaEncontrada, valorDeposito);
+            System.out.println("Deposito realizado com sucesso.");
+            System.out.printf("Seu novo saldo será de R$ %.2f\n", contaEncontrada.getSaldo());
         }
 
     }
@@ -102,6 +108,10 @@ public class Bancario extends Usuario{
             System.out.println("Conta inexistente.");
             return;
         }
+        if (!contaOrigemEncontrada.getTipo().equals("corrente")) {
+            System.out.println("Só é possível realizar transferência de uma conta corrente.");
+            return;
+        }
 
         System.out.println("Informe o número da conta de destino:");
         String numContaDestino = input.nextLine();
@@ -113,6 +123,10 @@ public class Bancario extends Usuario{
         }
         if (contaDestinoEncontrada == null){
             System.out.println("Conta inexistente.");
+            return;
+        }
+        if (contaDestinoEncontrada.getTipo().equals("adicional")){
+            System.out.println("Não é possivel transferir para uma conta corrente adicional.");
             return;
         }
 
@@ -132,7 +146,8 @@ public class Bancario extends Usuario{
                 return;
             }
             if (contaOrigemEncontrada.autenticar(senha)) {
-                contaOrigemEncontrada.transferir(contaOrigemEncontrada, contaDestinoEncontrada, valorTransferencia);
+                ContaCorrente contaCorrente = (ContaCorrente) contaOrigemEncontrada;
+                contaCorrente.transferir(contaOrigemEncontrada, contaDestinoEncontrada, valorTransferencia);
                 senhaCorreta = true;
             } else {
                 System.out.println("Senha incorreta. Tente novamente.\n");
@@ -157,7 +172,7 @@ public class Bancario extends Usuario{
             System.out.println("Conta inexistente.");
             return;
         }
-        if (contaEncontrada.getTipo() != "poupanca") {
+        if (!contaEncontrada.getTipo().equals("poupanca")) {
             System.out.println("Informe uma Conta Poupança");
             return;
         }
@@ -176,15 +191,9 @@ public class Bancario extends Usuario{
 
     }
 
-    //Metodo para escolher a conta que vai ser realizada as operações
-    private void escolherConta() {
-        System.out.println("Insira o número da conta que deseja realizar uma operação:");
-    }
-
     //Menu de opçoes para o bancario
     public void menuBancario() throws IOException {
         Scanner input = new Scanner(System.in);
-        escolherConta();
         int opcao = 0;
         //Loop para escolher uma opção
         do {

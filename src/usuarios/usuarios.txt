@@ -1,3 +1,4 @@
 NivelUsuario,Nome,Senha,ContaCorrente,ContaPoupanca,ContaAdicional
-correntista,luis,1234,CC95700,CP98356,CA50892
+correntista,luis,1234,CC95700,CP98356,CA65735
 admin,admin,1234
+bancario,abner,1234

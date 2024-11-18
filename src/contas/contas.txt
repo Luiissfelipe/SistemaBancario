@@ -1,4 +1,4 @@
 NumeroConta,TipoConta,Titular,Senha,Saldo,ChequeEspecial,LimiteCheque
-CA50892,adicional,luis,1234,200.0
-CC95700,corrente,luis,1234,0.0,true,500.0
-CP98356,poupanca,luis,1234,1000.0
+CA65735,adicional,luis,1234,300.0
+CC95700,corrente,luis,1234,250.0,true,500.0
+CP98356,poupanca,luis,1234,750.0

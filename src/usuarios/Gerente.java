@@ -1,5 +1,6 @@
 package usuarios;
 
+import contas.Conta;
 import contas.ContaCorrente;
 import contas.ContaCorrenteAdicional;
 import contas.ContaPoupanca;
@@ -226,7 +227,11 @@ public class Gerente extends Usuario {
                 break;
             case 2:
                 if (!correntistaEncontrado.getNumContaCorrente().equals("null")) {
-                    criarContaCorrenteAdicional(correntistaEncontrado);
+                    if (correntistaEncontrado.getNumContaAdicional().equals("null")){
+                        criarContaCorrenteAdicional(correntistaEncontrado);
+                    } else {
+                        System.out.println("Esse correntista já possui uma conta adicional.");
+                    }
                 }else {
                     System.out.println("Esse correntista não possui uma conta corrente para criar uma conta adicional.");
                 }
@@ -244,6 +249,35 @@ public class Gerente extends Usuario {
 
     }
 
+    private void alterarLimiteContaAdicional() throws IOException {
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("Informe o número da conta adicional:");
+        String numContaAdicional = input.nextLine();
+        Conta contaEncontrada = SistemaBanco.getContas().get(numContaAdicional);
+
+        if (numContaAdicional.isEmpty()) {
+            System.out.println("O número da conta não pode ser vazio. Tente novamente.\n");
+            return;
+        }
+        if (contaEncontrada == null){
+            System.out.println("Conta inexistente.");
+            return;
+        }
+        if (!contaEncontrada.getTipo().equals("adicional")) {
+            System.out.println("Essa não é uma conta corrente adicional.");
+            return;
+        }
+
+        System.out.printf("O limite dessa conta é R$ %.2f\n", contaEncontrada.getSaldo());
+        System.out.println("Digite o novo valor de limite.");
+        double novoLimite = input.nextDouble();
+
+        contaEncontrada.setSaldo(novoLimite);
+        SistemaBanco.adicionarConta(contaEncontrada);
+        System.out.printf("Limite alterado. Novo limite é R$ %.2f\n", contaEncontrada.getSaldo());
+    }
+
     //Menu de opçoes para o gerente
     public void menuGerente() throws IOException {
         Scanner input = new Scanner(System.in);
@@ -255,6 +289,7 @@ public class Gerente extends Usuario {
                         [1] Cadastrar bancario
                         [2] Cadastrar correntista
                         [3] Criar conta para usuario existente
+                        [4] Alterar limite de conta corrente adicional
                         [0] Sair
                         """);
             try {
@@ -273,6 +308,9 @@ public class Gerente extends Usuario {
                         break;
                     case 3:
                         criarConta();
+                        break;
+                    case 4:
+                        alterarLimiteContaAdicional();
                         break;
                     case 0:
                         //Fecha o sistema

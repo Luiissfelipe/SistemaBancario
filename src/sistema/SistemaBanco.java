@@ -2,6 +2,7 @@ package sistema;
 
 import contas.Conta;
 import contas.ContaCorrente;
+import contas.ContaCorrenteAdicional;
 import contas.ContaPoupanca;
 import usuarios.*;
 
@@ -144,10 +145,19 @@ public class SistemaBanco {
                     contaCorrente.setChequeEspecial(chequeEspecial);
                     contaCorrente.setLimiteChequeEspecial(limiteChequeEspecial);
                     adicionarConta(contaCorrente);
-                } else if (tipoConta.equals("poupanca")) {
-                    ContaPoupanca contaPoupanca = new ContaPoupanca(numeroConta, titular, senha);
-                    contaPoupanca.setSaldo(saldo);
-                    adicionarConta(contaPoupanca);
+                } else {
+                    switch (tipoConta) {
+                        case "poupanca":
+                            ContaPoupanca contaPoupanca = new ContaPoupanca(numeroConta, titular, senha);
+                            contaPoupanca.setSaldo(saldo);
+                            adicionarConta(contaPoupanca);
+                            break;
+                        case "adicional":
+                            ContaCorrenteAdicional contaCorrenteAdicional = new ContaCorrenteAdicional(numeroConta, titular, senha);
+                            contaCorrenteAdicional.setSaldo(saldo);
+                            adicionarConta(contaCorrenteAdicional);
+                            break;
+                    }
                 }
             }
         }

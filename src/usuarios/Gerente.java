@@ -1,6 +1,7 @@
 package usuarios;
 
 import contas.ContaCorrente;
+import contas.ContaCorrenteAdicional;
 import contas.ContaPoupanca;
 import sistema.SistemaBanco;
 
@@ -165,6 +166,24 @@ public class Gerente extends Usuario {
         System.out.println("Conta poupança criada com sucesso.");
     }
 
+    private void criarContaCorrenteAdicional(Correntista correntista) throws IOException {
+        Scanner input = new Scanner(System.in);
+
+        correntista.gerarNumContaAdicional();
+        String numContaAdicional = correntista.getNumContaAdicional();
+        if (SistemaBanco.getContas().get(numContaAdicional) != null) {
+            return;
+        }
+        System.out.println("Digite o valor do limite da Conta Adicional:");
+        double limite = input.nextDouble();
+        ContaCorrenteAdicional contaCorrenteAdicional = new ContaCorrenteAdicional(numContaAdicional, correntista.getNome(), correntista.getSenha());
+        contaCorrenteAdicional.setSaldo(limite);
+        SistemaBanco.adicionarConta(contaCorrenteAdicional);
+        SistemaBanco.adicionarUsuario(correntista);
+        System.out.println("Conta corrente adicional criada com sucesso.");
+        System.out.printf("O limite é de R$ %.2f\n", contaCorrenteAdicional.getSaldo());
+    }
+
     private void criarConta() throws IOException {
         Scanner input = new Scanner(System.in);
 
@@ -206,7 +225,11 @@ public class Gerente extends Usuario {
                 }
                 break;
             case 2:
-                System.out.println("Criando conta adicional.");
+                if (!correntistaEncontrado.getNumContaCorrente().equals("null")) {
+                    criarContaCorrenteAdicional(correntistaEncontrado);
+                }else {
+                    System.out.println("Esse correntista não possui uma conta corrente para criar uma conta adicional.");
+                }
                 break;
             case 3:
                 if (correntistaEncontrado.getNumContaPoupanca().equals("null")) {

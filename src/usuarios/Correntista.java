@@ -48,7 +48,7 @@ public class Correntista extends Usuario{
         this.numContaPoupanca = "CP" + numero;
     }
 
-    public void gerarNumContaAdicional(String numContaAdicional) {
+    public void gerarNumContaAdicional() {
         Random random = new Random();
         int numero = random.nextInt(90000) + 10000;
         this.numContaAdicional = "CA" + numero;

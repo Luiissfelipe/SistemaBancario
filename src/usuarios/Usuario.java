@@ -4,9 +4,9 @@ import java.util.Scanner;
 
 public class Usuario {
     //Atributos do usuario
-    protected String nome;
-    protected String senha;
-    protected String nivelUsuario;
+    private String nome;
+    private String senha;
+    private String nivelUsuario;
 
     //Construtor do usuario
     public Usuario(String nome, String senha, String nivelUsuario) {

@@ -18,40 +18,60 @@ public class Bancario extends Usuario{
 
     //Metodo para realizar saque
     private void realizarSaque() throws IOException {
+        //Declarando scanner
         Scanner input = new Scanner(System.in);
 
+        //Lendo numero da conta
         System.out.println("Informe o número da conta:");
         String numConta = input.nextLine();
+
+        //Declarando conta conforme numero lido
         Conta contaEncontrada = SistemaBanco.getContas().get(numConta);
 
+        //Erro para caso o numero esteja vazio
         if (numConta.isEmpty()) {
             System.out.println("O número da conta não pode ser vazio. Tente novamente.\n");
             return;
         }
+        //Verificando se a conta existe
         if (contaEncontrada == null){
             System.out.println("Conta inexistente.");
             return;
         }
 
+        //Mostrando saldo disponivel
+        System.out.printf("Saldo disponivel: R$ %.2f\n", contaEncontrada.getSaldo());
+
+        //Lendo o valor do saque
         System.out.println("Informe o valor do saque:");
         double valorSaque = input.nextDouble();
         input.nextLine();
-        if (valorSaque < 0) {
+
+        //Erro para caso o valor do saque seja menor ou igual a 0
+        if (valorSaque <= 0) {
             System.out.println("Valor de saque deve ser maior que 0.");
         } else {
+            //Declarando senha como falsa
             boolean senhaCorreta = false;
+            //Loop para digitar a senha
             while (!senhaCorreta) {
+                //Lendo senha
                 System.out.println("Informe sua senha:");
                 String senha = input.nextLine();
 
+                //Erro para caso a senha esteja vazia ou tenha espaços
                 if (senha == null || senha.isEmpty() || senha.contains(" ")) {
                     System.out.println("Senha não pode estar vazia e/ou conter espaços. Tente novamente.\n");
                     return;
                 }
+                //Verificando se a senha esta correta
                 if (contaEncontrada.autenticar(senha)) {
+                    //Chamando o metodo para sacar
                     contaEncontrada.sacar(contaEncontrada, valorSaque);
+                    //Declarando senha como verdadeira para encerrar o loop
                     senhaCorreta = true;
                 } else {
+                    //Erro caso a senha estiver incorreta
                     System.out.println("Senha incorreta. Tente novamente.\n");
             }
         }
@@ -157,6 +177,7 @@ public class Bancario extends Usuario{
 
     }
 
+    //Metodo para calcular rendimento da conta poupança
     private void calcularRendimento() {
         Scanner input = new Scanner(System.in);
 

@@ -96,24 +96,31 @@ public class Admin extends Usuario {
                         opcao = 0;
                         break;
                     case 4:
-                        //Cria um correntista para acessar as funções de correntista
+                        //Solicita o nome do correntista para acessar seu menu
                         System.out.println("Digite o nome do correntista:");
                         String nomeCorrentista = input.nextLine();
 
+                        //Erro para caso o nome esteja vazio
                         if (nomeCorrentista == null || nomeCorrentista.isEmpty()) {
                             System.out.println("O nome não pode estar vazio. Tente novamente.\n");
                             continue;
                         }
+                        //Declarando usuario conforme o nome lido
                         Usuario usuarioEncontrado = SistemaBanco.getUsuarios().get(nomeCorrentista);
+
+                        //Verificando se o usuario existe
                         if (usuarioEncontrado == null) {
                             System.out.println("Correntista não encontrado. Tente novamente.\n");
                             continue;
                         }
+                        //Verificando se o usuario é um correntista
                         if (!usuarioEncontrado.getNivelUsuario().equals("correntista")) {
                             System.out.println("Esse usuário não é um correntista.");
                             continue;
                         }
+                        //Fazendo casting do usuario encontrado para correntista
                         Correntista correntista = (Correntista) usuarioEncontrado;
+                        //Acessando o menu do correntista
                         correntista.menuCorrentista();
                         break;
                     case 0:

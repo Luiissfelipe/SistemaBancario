@@ -93,6 +93,7 @@ public class Gerente extends Usuario {
         //Se não ocorrer nenhum erro, um novo Correntista é criado
         Correntista correntista = new Correntista(nomeCorrentista, senhaCorrentista);
 
+        //Perguntando qual conta deve ser criada
         System.out.println("""
                 Qual conta deseja criar?
                 [1] Conta corrente
@@ -100,32 +101,42 @@ public class Gerente extends Usuario {
                 """);
         int opcao = input.nextInt();
         input.nextLine();
-
         switch (opcao) {
             case 1:
+                //Chama o metodo para criar uma conta corrente
                 criarContaCorrente(correntista);
                 break;
             case 2:
+                //Chama o metodo para criar uma conta poupança
                 criarContaPoupanca(correntista);
                 break;
             default:
+                //Erro caso não digite uma opção válida
                 System.out.println("Digite uma opção válida.");
         }
 
 
-        //Chamando o metodo para adicionar o Usuario criado
+        //Chamando o metodo para adicionar o Usuario criado no sistema
         SistemaBanco.adicionarUsuario(correntista);
         System.out.printf("Correntista %s cadastrado com sucesso.\n\n", nomeCorrentista);
     }
 
+    //Metodo para criar uma conta corrente
     private void criarContaCorrente(Correntista correntista) throws IOException {
+        //Declarando scanner
         Scanner input = new Scanner(System.in);
+        //Chamando metodo para gerar um número de conta
         correntista.gerarNumContaCorrente();
+        //Declarando o número de conta gerado
         String numContaCorrente = correntista.getNumContaCorrente();
+        //Verificando se o número de conta gerado ja existe
         if (SistemaBanco.getContas().get(numContaCorrente) != null) {
+            //Se existir ele volta e gera outro
             return;
         }
+        //Cria uma nova conta para o correntista
         ContaCorrente contaCorrente = new ContaCorrente(numContaCorrente,correntista.getNome(),correntista.getSenha());
+        //Perguntando se deseja utilizar cheque especial
         System.out.println("""
                         Deseja utilizar cheque especial?
                         [1] Sim
@@ -135,62 +146,97 @@ public class Gerente extends Usuario {
         input.nextLine();
         switch (opcaoChequeEspecial) {
             case 1:
+                //Declarando que a conta utilizara cheque especial
                 contaCorrente.setChequeEspecial(true);
+                //Lendo o valor do limite do cheque especial
                 System.out.println("Digite o valor do limite do cheque especial:");
                 double limiteChequeEspecial = input.nextDouble();
+                //Declarando o limite do cheque especial
                 contaCorrente.setLimiteChequeEspecial(limiteChequeEspecial);
+                //Adicionando a conta no sistema
                 SistemaBanco.adicionarConta(contaCorrente);
+                //Atualizando o usuario no sistema
                 SistemaBanco.adicionarUsuario(correntista);
                 System.out.printf("Conta corrente criada com um limite de R$ %.2f para cheque especial.\n", limiteChequeEspecial);
+                //Mostrando o número da conta criada
                 System.out.printf("Número da conta: %s\n", contaCorrente.getNumeroConta());
                 break;
             case 2:
+                //Declarando que a conta não utilizara cheque especial
                 contaCorrente.setChequeEspecial(false);
+                //Declarando o limite do cheque especial igual a 0
                 contaCorrente.setLimiteChequeEspecial(0);
+                //Adicionando a conta no sistema
                 SistemaBanco.adicionarConta(contaCorrente);
+                //Atualizando o usuario no sistema
                 SistemaBanco.adicionarUsuario(correntista);
                 System.out.println("Conta corrente criada sem opção de cheque especial.");
+                //Mostrando o número da conta criada
                 System.out.printf("Número da conta: %s\n", contaCorrente.getNumeroConta());
                 break;
             default:
+                //Erro caso não digite uma opção válida
                 System.out.println("Digite uma opção válida.");
         }
     }
 
+    //Metodo para criar uma conta poupança
     private void criarContaPoupanca(Correntista correntista) throws IOException {
+        //Chamando metodo para gerar um número de conta
         correntista.gerarNumContaPoupanca();
+        //Declarando o número de conta gerado
         String numContaPoupanca = correntista.getNumContaPoupanca();
+        //Verificando se o número de conta gerado ja existe
         if (SistemaBanco.getContas().get(numContaPoupanca) != null) {
+            //Se existir ele volta e gera outro
             return;
         }
+        //Cria uma nova conta para o correntista
         ContaPoupanca contaPoupanca = new ContaPoupanca(numContaPoupanca, correntista.getNome(), correntista.getSenha());
+        //Adicionando a conta no sistema
         SistemaBanco.adicionarConta(contaPoupanca);
+        //Atualizando o usuario no sistema
         SistemaBanco.adicionarUsuario(correntista);
         System.out.println("Conta poupança criada com sucesso.");
+        //Mostrando o número da conta criada
         System.out.printf("Número da conta: %s\n", contaPoupanca.getNumeroConta());
     }
 
+    //Metodo para criar uma conta corrente adicional
     private void criarContaCorrenteAdicional(Correntista correntista) throws IOException {
+        //Declarando o scanner
         Scanner input = new Scanner(System.in);
-
+        //Chamando metodo para gerar um número de conta
         correntista.gerarNumContaAdicional();
+        //Declarando o número de conta gerado
         String numContaAdicional = correntista.getNumContaAdicional();
+        //Verificando se o número de conta gerado ja existe
         if (SistemaBanco.getContas().get(numContaAdicional) != null) {
+            //Se existir ele volta e gera outro
             return;
         }
+        //Lendo o limite da conta adicional
         System.out.println("Digite o valor do limite da Conta Adicional:");
         double limite = input.nextDouble();
+        //Cria uma nova conta para o correntista
         ContaCorrenteAdicional contaCorrenteAdicional = new ContaCorrenteAdicional(numContaAdicional, correntista.getNome(), correntista.getSenha());
+        //Declarando o limite da conta
         contaCorrenteAdicional.setSaldo(limite);
+        //Adicionando a conta no sistema
         SistemaBanco.adicionarConta(contaCorrenteAdicional);
+        //Atualizando o usuario no sistema
         SistemaBanco.adicionarUsuario(correntista);
         System.out.printf("Conta corrente adicional criada com um limite de R$ %.2f\n", contaCorrenteAdicional.getSaldo());
+        //Mostrando o número da conta criada
         System.out.printf("Número da conta: %s\n", contaCorrenteAdicional.getNumeroConta());
     }
 
+    //Metodo de verificação para criar uma conta
     private void criarConta() throws IOException {
+        //Declarando scanner
         Scanner input = new Scanner(System.in);
 
+        //Lendo o nome do usuario
         System.out.println("Digite o nome do correntista que deseja criar uma conta bancária:");
         String nomeCorrentista = input.nextLine();
         //Erro para caso o nome esteja vazio
@@ -204,13 +250,16 @@ public class Gerente extends Usuario {
             return;
         }
 
+        //Verificando se o usuario é um correntista
         if (!(SistemaBanco.getUsuarios().get(nomeCorrentista) instanceof Correntista)) {
             System.out.println("O nome digitado não pertence a um correntista.\n");
             return;
         }
 
+        //Declarando correntista encontrado
         Correntista correntistaEncontrado = (Correntista) SistemaBanco.getUsuarios().get(nomeCorrentista);
 
+        //Opção para criar conta
         System.out.println("""
                 Qual conta deseja criar?
                 [1] Conta Corrente
@@ -222,15 +271,20 @@ public class Gerente extends Usuario {
 
         switch (opcao) {
             case 1:
+                //Verificando se o correntista ja possui uma conta corrente
                 if (correntistaEncontrado.getNumContaCorrente().equals("null")) {
+                    //Chamando metodo para criar uma conta corrente
                     criarContaCorrente(correntistaEncontrado);
                 }else {
                     System.out.println("Esse correntista já possui uma conta corrente.");
                 }
                 break;
             case 2:
+                //Verificando se o correntista possui uma conta corrente para poder criar uma adicional
                 if (!correntistaEncontrado.getNumContaCorrente().equals("null")) {
+                    //Verificando se o correntista ja possui uma conta corrente adicional
                     if (correntistaEncontrado.getNumContaAdicional().equals("null")){
+                        //Chamando metodo para criar uma conta corrente adicional
                         criarContaCorrenteAdicional(correntistaEncontrado);
                     } else {
                         System.out.println("Esse correntista já possui uma conta adicional.");
@@ -240,44 +294,59 @@ public class Gerente extends Usuario {
                 }
                 break;
             case 3:
+                //Verificando se o correntista ja possui uma conta poupança
                 if (correntistaEncontrado.getNumContaPoupanca().equals("null")) {
+                    //Chamando metodo para criar uma conta poupança
                     criarContaPoupanca(correntistaEncontrado);
                 }else {
                     System.out.println("Esse correntista já possui uma conta poupanca.");
                 }
                 break;
             default:
+                //Erro caso não escolha uma opção valida
                 System.out.println("Escolha uma opção válida.");
         }
 
     }
 
+    //Metodo para alterar o limite de uma conta adicional
     private void alterarLimiteContaAdicional() throws IOException {
+        //Declarando o scanner
         Scanner input = new Scanner(System.in);
 
+        //Lendo o numero da conta
         System.out.println("Informe o número da conta adicional:");
         String numContaAdicional = input.nextLine();
+        //Declarando conta conforme o numero lido
         Conta contaEncontrada = SistemaBanco.getContas().get(numContaAdicional);
 
+        //Erro para caso o nome esteja vazio
         if (numContaAdicional.isEmpty()) {
             System.out.println("O número da conta não pode ser vazio. Tente novamente.\n");
             return;
         }
+        //Verificando se a conta existe no sistema
         if (contaEncontrada == null){
             System.out.println("Conta inexistente.");
             return;
         }
+        //Verificando se é uma conta corrente adicional
         if (!contaEncontrada.getTipo().equals("adicional")) {
             System.out.println("Essa não é uma conta corrente adicional.");
             return;
         }
 
+        //Mostrando o limite da conta
         System.out.printf("O limite dessa conta é R$ %.2f\n", contaEncontrada.getSaldo());
+        //Lendo o limite digitado
         System.out.println("Digite o novo valor de limite.");
         double novoLimite = input.nextDouble();
 
+        //Declarando novo limite
         contaEncontrada.setSaldo(novoLimite);
+        //Atualizando a conta no sistema
         SistemaBanco.adicionarConta(contaEncontrada);
+        //Mostrando novo limite
         System.out.printf("Limite alterado. Novo limite é R$ %.2f\n", contaEncontrada.getSaldo());
     }
 
@@ -310,9 +379,11 @@ public class Gerente extends Usuario {
                         cadastrarCorrentista();
                         break;
                     case 3:
+                        //Chama o metodo para criar uma conta
                         criarConta();
                         break;
                     case 4:
+                        //Chama o metodo para alterar o limite de uma conta adicional
                         alterarLimiteContaAdicional();
                         break;
                     case 0:

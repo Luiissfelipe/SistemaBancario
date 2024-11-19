@@ -36,7 +36,7 @@ public class Main {
                 System.out.println("Sistema finalizado.");
                 break;
             case "correntista":
-                Correntista correntista = (Correntista) SistemaBanco.getUsuarios().get(login.getNome());
+                Correntista correntista = (Correntista) usuario;
                 correntista.menuCorrentista();
                 System.out.println("Sistema finalizado.");
                 break;

@@ -1,2 +1,3 @@
 NivelUsuario,Nome,Senha,ContaCorrente,ContaPoupanca,ContaAdicional
+gerente,lucas,1234
 admin,admin,1234

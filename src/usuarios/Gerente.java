@@ -142,6 +142,7 @@ public class Gerente extends Usuario {
                 SistemaBanco.adicionarConta(contaCorrente);
                 SistemaBanco.adicionarUsuario(correntista);
                 System.out.printf("Conta corrente criada com um limite de R$ %.2f para cheque especial.\n", limiteChequeEspecial);
+                System.out.printf("Número da conta: %s\n", contaCorrente.getNumeroConta());
                 break;
             case 2:
                 contaCorrente.setChequeEspecial(false);
@@ -149,6 +150,7 @@ public class Gerente extends Usuario {
                 SistemaBanco.adicionarConta(contaCorrente);
                 SistemaBanco.adicionarUsuario(correntista);
                 System.out.println("Conta corrente criada sem opção de cheque especial.");
+                System.out.printf("Número da conta: %s\n", contaCorrente.getNumeroConta());
                 break;
             default:
                 System.out.println("Digite uma opção válida.");
@@ -165,6 +167,7 @@ public class Gerente extends Usuario {
         SistemaBanco.adicionarConta(contaPoupanca);
         SistemaBanco.adicionarUsuario(correntista);
         System.out.println("Conta poupança criada com sucesso.");
+        System.out.printf("Número da conta: %s\n", contaPoupanca.getNumeroConta());
     }
 
     private void criarContaCorrenteAdicional(Correntista correntista) throws IOException {
@@ -181,8 +184,8 @@ public class Gerente extends Usuario {
         contaCorrenteAdicional.setSaldo(limite);
         SistemaBanco.adicionarConta(contaCorrenteAdicional);
         SistemaBanco.adicionarUsuario(correntista);
-        System.out.println("Conta corrente adicional criada com sucesso.");
-        System.out.printf("O limite é de R$ %.2f\n", contaCorrenteAdicional.getSaldo());
+        System.out.printf("Conta corrente adicional criada com um limite de R$ %.2f\n", contaCorrenteAdicional.getSaldo());
+        System.out.printf("Número da conta: %s\n", contaCorrenteAdicional.getNumeroConta());
     }
 
     private void criarConta() throws IOException {

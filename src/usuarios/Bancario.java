@@ -82,7 +82,7 @@ public class Bancario extends Usuario{
         System.out.println("Informe o valor do depósito:");
         double valorDeposito = input.nextDouble();
 
-        if (valorDeposito < 0) {
+        if (valorDeposito <= 0) {
             System.out.println("O valor do deposito deve ser maior que 0.");
         } else {
             contaEncontrada.depositar(contaEncontrada, valorDeposito);
@@ -133,7 +133,7 @@ public class Bancario extends Usuario{
         System.out.println("Informe o valor da tranferência:");
         double valorTransferencia = input.nextDouble();
         input.nextLine();
-        if (valorTransferencia < 0) {
+        if (valorTransferencia <= 0) {
             System.out.println("Valor da tranferência deve ser maior que 0.");
         }
         boolean senhaCorreta = false;

@@ -17,10 +17,9 @@ public class teste {
         SistemaBanco.carregarUsuarios();
         SistemaBanco.carregarContas();
 
-        ContaCorrente contaCorrente = (ContaCorrente) SistemaBanco.getContas().get("luis");
+        Correntista correntista = (Correntista) SistemaBanco.getUsuarios().get("luis");
 
-
-        System.out.println(contaCorrente);
+        correntista.menuCorrentista();
 
     }
 }

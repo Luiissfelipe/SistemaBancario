@@ -1,6 +1,12 @@
 package usuarios;
 
+import contas.Conta;
+import contas.ContaCorrente;
+import sistema.SistemaBanco;
+
+import java.io.IOException;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Correntista extends Usuario{
 
@@ -52,6 +58,165 @@ public class Correntista extends Usuario{
         Random random = new Random();
         int numero = random.nextInt(90000) + 10000;
         this.numContaAdicional = "CA" + numero;
+    }
+
+    private void realizarSaque(Conta contaEncontrada) throws IOException {
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("Informe o valor do saque:");
+        double valorSaque = input.nextDouble();
+        input.nextLine();
+        if (valorSaque < 0) {
+            System.out.println("Valor de saque deve ser maior que 0.");
+        } else {
+            boolean senhaCorreta = false;
+            while (!senhaCorreta) {
+                System.out.println("Informe sua senha:");
+                String senha = input.nextLine();
+
+                if (senha == null || senha.isEmpty() || senha.contains(" ")) {
+                    System.out.println("Senha não pode estar vazia e/ou conter espaços. Tente novamente.\n");
+                    return;
+                }
+                if (contaEncontrada.autenticar(senha)) {
+                    contaEncontrada.sacar(contaEncontrada, valorSaque);
+                    senhaCorreta = true;
+                } else {
+                    System.out.println("Senha incorreta. Tente novamente.\n");
+                }
+            }
+        }
+    }
+
+    private void realizarDeposito(Conta contaEncontrada) throws IOException {
+        Scanner input = new Scanner(System.in);
+
+        if (contaEncontrada.getTipo().equals("adicional")) {
+            System.out.println("Você não pode depositar em uma conta adicional.");
+            return;
+        }
+        System.out.println("Informe o valor do depósito:");
+        double valorDeposito = input.nextDouble();
+
+        if (valorDeposito <= 0) {
+            System.out.println("O valor do deposito deve ser maior que 0.");
+        } else {
+            contaEncontrada.depositar(contaEncontrada, valorDeposito);
+            System.out.println("Deposito realizado com sucesso.");
+            System.out.printf("Seu novo saldo será de R$ %.2f\n", contaEncontrada.getSaldo());
+        }
+    }
+
+    private void realizarTransferencia(Conta contaEncontrada) throws IOException {
+        Scanner input = new Scanner(System.in);
+
+        if (!contaEncontrada.getTipo().equals("corrente")) {
+            System.out.println("Só é possível realizar transferência de uma conta corrente.");
+            return;
+        }
+
+        System.out.println("Informe o número da conta de destino:");
+        String numContaDestino = input.nextLine();
+        Conta contaDestinoEncontrada = SistemaBanco.getContas().get(numContaDestino);
+
+        if (numContaDestino.isEmpty()) {
+            System.out.println("O número da conta não pode ser vazio. Tente novamente.\n");
+            return;
+        }
+        if (contaDestinoEncontrada == null){
+            System.out.println("Conta inexistente.");
+            return;
+        }
+        if (contaDestinoEncontrada.getTipo().equals("adicional")){
+            System.out.println("Não é possivel transferir para uma conta corrente adicional.");
+            return;
+        }
+
+        System.out.println("Informe o valor da tranferência:");
+        double valorTransferencia = input.nextDouble();
+        input.nextLine();
+        if (valorTransferencia <= 0) {
+            System.out.println("Valor da tranferência deve ser maior que 0.");
+        }
+        boolean senhaCorreta = false;
+        while (!senhaCorreta) {
+            System.out.println("Informe a senha da conta de origem:");
+            String senha = input.nextLine();
+
+            if (senha == null || senha.isEmpty() || senha.contains(" ")) {
+                System.out.println("Senha não pode estar vazia e/ou conter espaços. Tente novamente.\n");
+                return;
+            }
+            if (contaEncontrada.autenticar(senha)) {
+                ContaCorrente contaCorrente = (ContaCorrente) contaEncontrada;
+                contaCorrente.transferir(contaEncontrada, contaDestinoEncontrada, valorTransferencia);
+                senhaCorreta = true;
+            } else {
+                System.out.println("Senha incorreta. Tente novamente.\n");
+            }
+        }
+    }
+
+    //Menu de opçoes para o gerente
+    public void menuCorrentista() throws IOException {
+        Scanner input = new Scanner(System.in);
+
+        System.out.println("Digite o número da sua conta:");
+        String numConta = input.nextLine();
+
+        if (numConta == null || numConta.isEmpty()) {
+            System.out.println("O número da conta não pode estar vazio. Tente novamente.\n");
+            return;
+        }
+        Conta contaEncontrada = SistemaBanco.getContas().get(numConta);
+
+        if (!contaEncontrada.getTitular().equals(this.getNome())) {
+            System.out.println("Conta não encontrada ou não pertence a esse usuário.");
+            return;
+        }
+
+        int opcao = 0;
+        //Loop para escolher uma opção
+        do {
+            System.out.print("""
+                        Escolha a operação que deseja realizar:
+                        [1] Realizar saque
+                        [2] Realizar depósito
+                        [3] Realizar transferência
+                        [0] Sair
+                        """);
+            try {
+                //Leitura da opção escolhida
+                opcao = input.nextInt();
+                //Pulando uma linha para não dar erro no scanner
+                input.nextLine();
+                switch (opcao) {
+                    case 1:
+                        //Chama o metodo para realizar saque
+                        realizarSaque(contaEncontrada);
+                        break;
+                    case 2:
+                        //Chama o metodo para cadastrar um correntista
+                        realizarDeposito(contaEncontrada);
+                        break;
+                    case 3:
+                        realizarTransferencia(contaEncontrada);
+                        break;
+                    case 0:
+                        //Fecha o sistema
+                        break;
+                    default:
+                        //Erro para caso digite uma opção invalida
+                        System.out.println("Opção invalida\n");
+                }
+            }catch (java.util.InputMismatchException e) {
+                //Erro para caso não seja digitado um número na opção
+                System.out.println("Entrada inválida. Por favor, insira um número.\n");
+                input.nextLine();
+            }
+        } while (opcao != 0);
+        //Fecha o Scanner
+        input.close();
     }
 
     @Override

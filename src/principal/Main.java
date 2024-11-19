@@ -36,7 +36,9 @@ public class Main {
                 System.out.println("Sistema finalizado.");
                 break;
             case "correntista":
-                System.out.printf("Usuário %s é um correntista\n", login.getNome());
+                Correntista correntista = (Correntista) SistemaBanco.getUsuarios().get(login.getNome());
+                correntista.menuCorrentista();
+                System.out.println("Sistema finalizado.");
                 break;
             default:
                 System.out.println("Usuário não identificado");

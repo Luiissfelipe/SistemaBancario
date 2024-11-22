@@ -30,6 +30,10 @@ public class Usuario {
         return nivelUsuario;
     }
 
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
     //Metodo para conferir se a senha informada é igual a do usuario
     public boolean autenticar(String senha) {
         return this.senha.equals(senha);
@@ -37,6 +41,6 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Usuário: " + this.getNome() + " - " + this.getSenha() + " [" + this.getNivelUsuario() + "]";
+        return this.getNome() + " [" + this.getNivelUsuario() + "]";
     }
 }

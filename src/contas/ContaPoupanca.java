@@ -19,8 +19,23 @@ public class ContaPoupanca extends Conta{
             saldo -= valorSaque;
             contaPoupanca.setSaldo(saldo);
             SistemaBanco.adicionarConta(contaPoupanca);
-            System.out.println("Saque realizado com sucesso.");
-            System.out.printf("Seu novo saldo será de R$ %.2f\n", contaPoupanca.getSaldo());
+            System.out.printf("Saque de R$ %.2f realizado com sucesso.\n", valorSaque);
+        } else {
+            System.out.println("Saldo insuficiente.");
+        }
+    }
+
+    @Override
+    public void transferir(Conta contaOrigemEncontrada, Conta contaDestinoEncontrada, Double valorTransferencia) throws IOException {
+        ContaPoupanca contaPoupanca = (ContaPoupanca) contaOrigemEncontrada;
+        double saldo = contaPoupanca.getSaldo();
+
+        if (saldo >= valorTransferencia) {
+            saldo -= valorTransferencia;
+            contaPoupanca.setSaldo(saldo);
+            SistemaBanco.adicionarConta(contaPoupanca);
+            depositar(contaDestinoEncontrada, valorTransferencia);
+            System.out.printf("Transferência de R$ %.2f realizada com sucesso.\n", valorTransferencia);
         } else {
             System.out.println("Saldo insuficiente.");
         }
@@ -33,7 +48,7 @@ public class ContaPoupanca extends Conta{
             saldoRendimento = saldoRendimento + ((taxaRendimento / 100) * saldoRendimento);
         }
 
-        System.out.printf("O valor do saldo após %d meses será de R$ %.2f\n", meses, saldoRendimento);
+        System.out.printf("O valor do saldo será de R$ %.2f, após %d meses \n", saldoRendimento, meses);
 
     }
 }

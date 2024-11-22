@@ -34,9 +34,13 @@ public class ContaCorrenteAdicional extends Conta{
             saldoContaCorrente -= valorSaque;
             contaCorrente.setSaldo(saldoContaCorrente);
             SistemaBanco.adicionarConta(contaCorrente);
-            System.out.println("Saque realizado com sucesso.");
-            System.out.printf("Seu novo saldo será de R$ %.2f\n", contaCorrenteAdicional.getSaldo());
+            System.out.printf("Saque de R$ %.2f realizado com sucesso.\n", valorSaque);
         }
+    }
+
+    @Override
+    public void transferir(Conta contaOrigemEncontrada, Conta contaDestinoEncontrada, Double valorTransferencia) throws IOException {
+        System.out.println("Não é possivel realizar transference de um conta adicional.");
     }
 
 }

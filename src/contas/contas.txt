@@ -1,1 +1,5 @@
 NumeroConta,TipoConta,Titular,Senha,Saldo,ChequeEspecial,LimiteCheque
+CC94185,corrente,samuel,1234,0.0,true,400.0
+CC47715,corrente,abner,1234,200.0,false,0.0
+CC98985,corrente,sergio,1234,100.0,true,7899.0
+CP24961,poupanca,sergio,1234,300.0

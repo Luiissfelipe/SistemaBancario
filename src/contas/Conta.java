@@ -40,6 +40,10 @@ public abstract class Conta {
         return tipo;
     }
 
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
     public void setSaldo(double saldo) {
         this.saldo = saldo;
     }
@@ -55,6 +59,8 @@ public abstract class Conta {
         conta.setSaldo(novoSaldo);
         SistemaBanco.adicionarConta(conta);
     }
+
+    public abstract void transferir(Conta contaOrigemEncontrada, Conta contaDestinoEncontrada, Double valorTransferencia) throws IOException;
 
     @Override
     public String toString() {

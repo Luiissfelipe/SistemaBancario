@@ -7,6 +7,7 @@ import contas.ContaPoupanca;
 import sistema.SistemaBanco;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Gerente extends Usuario {
@@ -15,6 +16,35 @@ public class Gerente extends Usuario {
     //Construtor do Gerente, ja cria com o nivel de usuario
     public Gerente(String nome, String senha) {
         super(nome, senha, "gerente");
+    }
+
+    private void mostrarUsuarios() {
+        System.out.println("Usuários cadastrados no sistema:");
+        for (Map.Entry<String, Usuario> entrada : SistemaBanco.getUsuarios().entrySet()) {
+            Usuario usuario = entrada.getValue();
+            if (usuario instanceof Correntista correntista) {
+                System.out.printf("Nome: %s [%s] Contas: %s - %s - %s\n",usuario.getNome(), usuario.getNivelUsuario(), correntista.getNumContaCorrente(),
+                        correntista.getNumContaPoupanca(), correntista.getNumContaAdicional());
+            } else {
+                System.out.printf("Nome: %s [%s]\n",usuario.getNome(), usuario.getNivelUsuario());
+            }
+        }
+        System.out.println(" ");
+    }
+
+    private void mostrarContas() {
+        System.out.println("Contas cadastradas no sistema:");
+        for (Map.Entry<String, Conta> entrada : SistemaBanco.getContas().entrySet()) {
+            Conta conta = entrada.getValue();
+            if (conta instanceof ContaCorrenteAdicional contaAdc) {
+                System.out.printf("Nº: %s [%s] - Titular: %s - Limite: R$ %.2f\n", contaAdc.getNumeroConta(), contaAdc.getTipo(),
+                        contaAdc.getTitular(), contaAdc.getSaldo());
+            }else {
+                System.out.printf("Nº: %s [%s] - Titular: %s - Saldo: R$ %.2f\n", conta.getNumeroConta(), conta.getTipo(),
+                        conta.getTitular(), conta.getSaldo());
+            }
+        }
+        System.out.println(" ");
     }
 
     //Metodo para cadastrar um bancario
@@ -92,6 +122,7 @@ public class Gerente extends Usuario {
 
         //Se não ocorrer nenhum erro, um novo Correntista é criado
         Correntista correntista = new Correntista(nomeCorrentista, senhaCorrentista);
+        System.out.printf("Correntista %s cadastrado com sucesso.\n\n", nomeCorrentista);
 
         //Perguntando qual conta deve ser criada
         System.out.println("""
@@ -118,7 +149,6 @@ public class Gerente extends Usuario {
 
         //Chamando o metodo para adicionar o Usuario criado no sistema
         SistemaBanco.adicionarUsuario(correntista);
-        System.out.printf("Correntista %s cadastrado com sucesso.\n\n", nomeCorrentista);
     }
 
     //Metodo para criar uma conta corrente
@@ -350,6 +380,62 @@ public class Gerente extends Usuario {
         System.out.printf("Limite alterado. Novo limite é R$ %.2f\n", contaEncontrada.getSaldo());
     }
 
+    private void alterarSenhaUsuario() throws IOException {
+        Scanner input = new Scanner(System.in);
+
+        //Lendo o numero da conta
+        System.out.println("Informe o nome do usuário:");
+        String nomeUsuario = input.nextLine();
+        if (nomeUsuario.isEmpty()) {
+            System.out.println("O nome do correntista não pode ser vazio. Tente novamente.\n");
+            return;
+        }
+        //Verificando se o nome digitado já existe no sistema
+        if (SistemaBanco.getUsuarios().get(nomeUsuario) == null) {
+            System.out.println("Usuário não encontrado.\n");
+            return;
+        }
+
+        System.out.println("Digite a nova senha do usuário:");
+        String novaSenha = input.nextLine();
+        //Erro para caso a senha esteja vazia ou tenha espaços
+        if (novaSenha.isEmpty() || novaSenha.contains(" ")) {
+            System.out.println("A senha não pode ser vazia nem conter espaços. Tente novamente.\n");
+            return;
+        }
+        //Erro para caso a senha não tenha entre 4 e 7 caracteres
+        if (novaSenha.length() < 4 || novaSenha.length() > 7) {
+            System.out.println("A senha deve conter entre 4 e 7 caracteres.\n");
+            return;
+        }
+
+        Usuario usuarioEncontrado = SistemaBanco.getUsuarios().get(nomeUsuario);
+        usuarioEncontrado.setSenha(novaSenha);
+        SistemaBanco.adicionarUsuario(usuarioEncontrado);
+
+        if (usuarioEncontrado instanceof Correntista correntista) {
+            Conta contaCorrente = SistemaBanco.getContas().get(correntista.getNumContaCorrente());
+            Conta contaPoupanca = SistemaBanco.getContas().get(correntista.getNumContaPoupanca());
+            Conta contaAdicional = SistemaBanco.getContas().get(correntista.getNumContaAdicional());
+
+            if (contaCorrente != null) {
+                contaCorrente.setSenha(novaSenha);
+                SistemaBanco.adicionarConta(contaCorrente);
+            }
+            if (contaPoupanca != null) {
+                contaPoupanca.setSenha(novaSenha);
+                SistemaBanco.adicionarConta(contaPoupanca);
+            }
+            if (contaAdicional != null) {
+                contaAdicional.setSenha(novaSenha);
+                SistemaBanco.adicionarConta(contaAdicional);
+            }
+        }
+
+        System.out.println("Senha alterada com sucesso.");
+
+    }
+
     //Menu de opçoes para o gerente
     public void menuGerente() throws IOException {
         Scanner input = new Scanner(System.in);
@@ -358,10 +444,13 @@ public class Gerente extends Usuario {
         do {
             System.out.print("""
                         Escolha uma opção:
-                        [1] Cadastrar bancario
-                        [2] Cadastrar correntista
-                        [3] Criar conta para usuario existente
-                        [4] Alterar limite de conta corrente adicional
+                        [1] Ver usuários cadastrados
+                        [2] Ver contas cadastradas
+                        [3] Cadastrar bancario
+                        [4] Cadastrar correntista
+                        [5] Criar conta para usuario existente
+                        [6] Alterar limite de conta corrente adicional
+                        [7] Alterar senha de usuário
                         [0] Sair
                         """);
             try {
@@ -371,20 +460,29 @@ public class Gerente extends Usuario {
                 input.nextLine();
                 switch (opcao) {
                     case 1:
+                        mostrarUsuarios();
+                        break;
+                    case 2:
+                        mostrarContas();
+                        break;
+                    case 3:
                         //Chama o metodo para cadastrar um bancario
                         cadastrarBancario();
                         break;
-                    case 2:
+                    case 4:
                         //Chama o metodo para cadastrar um correntista
                         cadastrarCorrentista();
                         break;
-                    case 3:
+                    case 5:
                         //Chama o metodo para criar uma conta
                         criarConta();
                         break;
-                    case 4:
+                    case 6:
                         //Chama o metodo para alterar o limite de uma conta adicional
                         alterarLimiteContaAdicional();
+                        break;
+                    case 7:
+                        alterarSenhaUsuario();
                         break;
                     case 0:
                         //Fecha o sistema

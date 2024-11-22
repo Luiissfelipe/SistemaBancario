@@ -41,8 +41,7 @@ public class ContaCorrente extends Conta{
                 saldo -= valorSaque;
                 contaCorrente.setSaldo(saldo);
                 SistemaBanco.adicionarConta(contaCorrente);
-                System.out.println("Saque realizado com sucesso.");
-                System.out.printf("Seu novo saldo será de R$ %.2f\n", contaCorrente.getSaldo());
+                System.out.printf("Saque de R$ %.2f realizado com sucesso.\n", valorSaque);
             } else {
                 System.out.println("Saldo insuficiente.");
             }
@@ -51,14 +50,14 @@ public class ContaCorrente extends Conta{
                 saldo -= valorSaque;
                 contaCorrente.setSaldo(saldo);
                 SistemaBanco.adicionarConta(contaCorrente);
-                System.out.println("Saque realizado com sucesso.");
-                System.out.printf("Seu novo saldo será de R$ %.2f\n", contaCorrente.getSaldo());
+                System.out.printf("Saque de R$ %.2f realizado com sucesso.\n", valorSaque);
             } else {
                 System.out.println("Saldo insuficiente.");
             }
         }
     }
 
+    @Override
     public void transferir(Conta contaOrigemEncontrada, Conta contaDestinoEncontrada, Double valorTransferencia) throws IOException {
         ContaCorrente contaCorrente = (ContaCorrente) contaOrigemEncontrada;
         double saldo = contaCorrente.getSaldo();
@@ -71,9 +70,7 @@ public class ContaCorrente extends Conta{
                 contaCorrente.setSaldo(saldo);
                 SistemaBanco.adicionarConta(contaCorrente);
                 depositar(contaDestinoEncontrada, valorTransferencia);
-                System.out.println("Transferência realizada com sucesso.");
-                System.out.printf("Novo saldo da conta de origem: R$ %.2f\n", contaOrigemEncontrada.getSaldo());
-                System.out.printf("Novo saldo da conta de destino: R$ %.2f\n", contaDestinoEncontrada.getSaldo());
+                System.out.printf("Transferência de R$ %.2f realizada com sucesso.\n", valorTransferencia);
             } else {
                 System.out.println("Saldo insuficiente.");
             }
@@ -83,13 +80,22 @@ public class ContaCorrente extends Conta{
                 contaCorrente.setSaldo(saldo);
                 SistemaBanco.adicionarConta(contaCorrente);
                 depositar(contaDestinoEncontrada, valorTransferencia);
-                System.out.println("Transferência realizada com sucesso.");
-                System.out.printf("Novo saldo da conta de origem: R$ %.2f\n", contaOrigemEncontrada.getSaldo());
-                System.out.printf("Novo saldo da conta de destino: R$ %.2f\n", contaDestinoEncontrada.getSaldo());
+                System.out.printf("Transferência de R$ %.2f realizada com sucesso.\n", valorTransferencia);
             } else {
                 System.out.println("Saldo insuficiente.");
             }
         }
+    }
+
+    public void calcularDividaChequeEspecial(double taxaRendimento, int meses) {
+        double saldoChequeEspecial = this.getSaldo();
+
+        for (int i = 0; i < meses; i++) {
+            saldoChequeEspecial = saldoChequeEspecial + ((taxaRendimento / 100) * saldoChequeEspecial);
+        }
+
+        System.out.printf("O valor da dívida será de R$ %.2f, após %d meses.\n", Math.abs(saldoChequeEspecial), meses);
+
     }
 
     @Override

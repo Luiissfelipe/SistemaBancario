@@ -18,10 +18,13 @@ public class Gerente extends Usuario {
         super(nome, senha, "gerente");
     }
 
+    //Metodo para mostrar usuarios
     private void mostrarUsuarios() {
         System.out.println("Usuários cadastrados no sistema:");
+        //Loop para percorrer o map e mostrar cada usuario
         for (Map.Entry<String, Usuario> entrada : SistemaBanco.getUsuarios().entrySet()) {
             Usuario usuario = entrada.getValue();
+            //Verificando se o usuario é um correntista
             if (usuario instanceof Correntista correntista) {
                 System.out.printf("Nome: %s [%s] Contas: %s - %s - %s\n",usuario.getNome(), usuario.getNivelUsuario(), correntista.getNumContaCorrente(),
                         correntista.getNumContaPoupanca(), correntista.getNumContaAdicional());
@@ -32,10 +35,13 @@ public class Gerente extends Usuario {
         System.out.println(" ");
     }
 
+    //Metodo para mostrar contas
     private void mostrarContas() {
         System.out.println("Contas cadastradas no sistema:");
+        //Loop para percorrer o map e mostrar cada conta
         for (Map.Entry<String, Conta> entrada : SistemaBanco.getContas().entrySet()) {
             Conta conta = entrada.getValue();
+            //Verificando se é uma conta corrente adicional
             if (conta instanceof ContaCorrenteAdicional contaAdc) {
                 System.out.printf("Nº: %s [%s] - Titular: %s - Limite: R$ %.2f\n", contaAdc.getNumeroConta(), contaAdc.getTipo(),
                         contaAdc.getTitular(), contaAdc.getSaldo());
@@ -57,12 +63,12 @@ public class Gerente extends Usuario {
         String nomeBancario = input.nextLine();
         //Erro para caso o nome esteja vazio
         if (nomeBancario.isEmpty()) {
-            System.out.println("O nome do bancário não pode ser vazio. Tente novamente.\n");
+            System.out.println("***O nome do bancário não pode ser vazio. Tente novamente.***\n");
             return;
         }
         //Verificando se o nome digitado já existe no sistema
         if (SistemaBanco.getUsuarios().get(nomeBancario) != null) {
-            System.out.println("Já existe uma conta com esse nome.\n");
+            System.out.println("***Já existe uma conta com esse nome.***\n");
             return;
         }
 
@@ -71,12 +77,12 @@ public class Gerente extends Usuario {
         String senhaBancario = input.nextLine();
         //Erro para caso a senha esteja vazia ou tenha espaços
         if (senhaBancario.isEmpty() || senhaBancario.contains(" ")) {
-            System.out.println("A senha não pode ser vazia nem conter espaços. Tente novamente.\n");
+            System.out.println("***A senha não pode ser vazia nem conter espaços. Tente novamente.***\n");
             return;
         }
         //Erro para caso a senha não tenha entre 4 e 7 caracteres
         if (senhaBancario.length() < 4 || senhaBancario.length() > 7) {
-            System.out.println("A senha deve conter entre 4 e 7 caracteres.\n");
+            System.out.println("***A senha deve conter entre 4 e 7 caracteres.***\n");
             return;
         }
 
@@ -84,7 +90,7 @@ public class Gerente extends Usuario {
         Bancario novoBancario = new Bancario(nomeBancario, senhaBancario);
         //Chamando o metodo para adicionar o Usuario criado
         SistemaBanco.adicionarUsuario(novoBancario);
-        System.out.printf("Bancário %s cadastrado com sucesso.\n\n", nomeBancario);
+        System.out.printf("***Bancário %s cadastrado com sucesso.***\n\n", nomeBancario);
     }
 
     //Metodo para cadastrar um correntista
@@ -97,12 +103,12 @@ public class Gerente extends Usuario {
         String nomeCorrentista = input.nextLine();
         //Erro para caso o nome esteja vazio
         if (nomeCorrentista.isEmpty()) {
-            System.out.println("O nome do correntista não pode ser vazio. Tente novamente.\n");
+            System.out.println("***O nome do correntista não pode ser vazio. Tente novamente.***\n");
             return;
         }
         //Verificando se o nome digitado já existe no sistema
         if (SistemaBanco.getUsuarios().get(nomeCorrentista) != null) {
-            System.out.println("Já existe uma conta com esse nome.\n");
+            System.out.println("***Já existe uma conta com esse nome.***\n");
             return;
         }
 
@@ -111,18 +117,18 @@ public class Gerente extends Usuario {
         String senhaCorrentista = input.nextLine();
         //Erro para caso a senha esteja vazia ou tenha espaços
         if (senhaCorrentista.isEmpty() || senhaCorrentista.contains(" ")) {
-            System.out.println("A senha não pode ser vazia nem conter espaços. Tente novamente.\n");
+            System.out.println("***A senha não pode ser vazia nem conter espaços. Tente novamente.***\n");
             return;
         }
         //Erro para caso a senha não tenha entre 4 e 7 caracteres
         if (senhaCorrentista.length() < 4 || senhaCorrentista.length() > 7) {
-            System.out.println("A senha deve conter entre 4 e 7 caracteres.\n");
+            System.out.println("***A senha deve conter entre 4 e 7 caracteres.***\n");
             return;
         }
 
         //Se não ocorrer nenhum erro, um novo Correntista é criado
         Correntista correntista = new Correntista(nomeCorrentista, senhaCorrentista);
-        System.out.printf("Correntista %s cadastrado com sucesso.\n\n", nomeCorrentista);
+        System.out.printf("***Correntista %s cadastrado com sucesso.***\n\n", nomeCorrentista);
 
         //Perguntando qual conta deve ser criada
         System.out.println("""
@@ -143,7 +149,7 @@ public class Gerente extends Usuario {
                 break;
             default:
                 //Erro caso não digite uma opção válida
-                System.out.println("Digite uma opção válida.");
+                System.out.println("***Digite uma opção válida.***");
         }
 
 
@@ -181,15 +187,19 @@ public class Gerente extends Usuario {
                 //Lendo o valor do limite do cheque especial
                 System.out.println("Digite o valor do limite do cheque especial:");
                 double limiteChequeEspecial = input.nextDouble();
+                if (limiteChequeEspecial <= 0) {
+                    System.out.println("***O limite deve ser maior que 0.***");
+                    return;
+                }
                 //Declarando o limite do cheque especial
                 contaCorrente.setLimiteChequeEspecial(limiteChequeEspecial);
                 //Adicionando a conta no sistema
                 SistemaBanco.adicionarConta(contaCorrente);
                 //Atualizando o usuario no sistema
                 SistemaBanco.adicionarUsuario(correntista);
-                System.out.printf("Conta corrente criada com um limite de R$ %.2f para cheque especial.\n", limiteChequeEspecial);
+                System.out.printf("***Conta corrente criada com um limite de R$ %.2f para cheque especial.***\n", limiteChequeEspecial);
                 //Mostrando o número da conta criada
-                System.out.printf("Número da conta: %s\n", contaCorrente.getNumeroConta());
+                System.out.printf("***Número da conta: %s***\n", contaCorrente.getNumeroConta());
                 break;
             case 2:
                 //Declarando que a conta não utilizara cheque especial
@@ -200,13 +210,13 @@ public class Gerente extends Usuario {
                 SistemaBanco.adicionarConta(contaCorrente);
                 //Atualizando o usuario no sistema
                 SistemaBanco.adicionarUsuario(correntista);
-                System.out.println("Conta corrente criada sem opção de cheque especial.");
+                System.out.println("***Conta corrente criada sem opção de cheque especial.***");
                 //Mostrando o número da conta criada
-                System.out.printf("Número da conta: %s\n", contaCorrente.getNumeroConta());
+                System.out.printf("***Número da conta: %s***\n", contaCorrente.getNumeroConta());
                 break;
             default:
                 //Erro caso não digite uma opção válida
-                System.out.println("Digite uma opção válida.");
+                System.out.println("***Digite uma opção válida.***");
         }
     }
 
@@ -227,9 +237,9 @@ public class Gerente extends Usuario {
         SistemaBanco.adicionarConta(contaPoupanca);
         //Atualizando o usuario no sistema
         SistemaBanco.adicionarUsuario(correntista);
-        System.out.println("Conta poupança criada com sucesso.");
+        System.out.println("***Conta poupança criada com sucesso.***");
         //Mostrando o número da conta criada
-        System.out.printf("Número da conta: %s\n", contaPoupanca.getNumeroConta());
+        System.out.printf("***Número da conta: %s***\n", contaPoupanca.getNumeroConta());
     }
 
     //Metodo para criar uma conta corrente adicional
@@ -256,9 +266,9 @@ public class Gerente extends Usuario {
         SistemaBanco.adicionarConta(contaCorrenteAdicional);
         //Atualizando o usuario no sistema
         SistemaBanco.adicionarUsuario(correntista);
-        System.out.printf("Conta corrente adicional criada com um limite de R$ %.2f\n", contaCorrenteAdicional.getSaldo());
+        System.out.printf("***Conta corrente adicional criada com um limite de R$ %.2f***\n", contaCorrenteAdicional.getSaldo());
         //Mostrando o número da conta criada
-        System.out.printf("Número da conta: %s\n", contaCorrenteAdicional.getNumeroConta());
+        System.out.printf("***Número da conta: %s***\n", contaCorrenteAdicional.getNumeroConta());
     }
 
     //Metodo de verificação para criar uma conta
@@ -271,18 +281,18 @@ public class Gerente extends Usuario {
         String nomeCorrentista = input.nextLine();
         //Erro para caso o nome esteja vazio
         if (nomeCorrentista.isEmpty()) {
-            System.out.println("O nome do correntista não pode ser vazio. Tente novamente.\n");
+            System.out.println("***O nome do correntista não pode ser vazio. Tente novamente.***\n");
             return;
         }
         //Verificando se o nome digitado existe no sistema
         if (SistemaBanco.getUsuarios().get(nomeCorrentista) == null) {
-            System.out.println("Não existe um usuário com esse nome.\n");
+            System.out.println("***Não existe um usuário com esse nome.***\n");
             return;
         }
 
         //Verificando se o usuario é um correntista
         if (!(SistemaBanco.getUsuarios().get(nomeCorrentista) instanceof Correntista correntistaEncontrado)) {
-            System.out.println("O nome digitado não pertence a um correntista.\n");
+            System.out.println("***O nome digitado não pertence a um correntista.***\n");
             return;
         }
 
@@ -305,7 +315,7 @@ public class Gerente extends Usuario {
                     //Chamando metodo para criar uma conta corrente
                     criarContaCorrente(correntistaEncontrado);
                 }else {
-                    System.out.println("Esse correntista já possui uma conta corrente.");
+                    System.out.println("***Esse correntista já possui uma conta corrente.***");
                 }
                 break;
             case 2:
@@ -316,10 +326,10 @@ public class Gerente extends Usuario {
                         //Chamando metodo para criar uma conta corrente adicional
                         criarContaCorrenteAdicional(correntistaEncontrado);
                     } else {
-                        System.out.println("Esse correntista já possui uma conta adicional.");
+                        System.out.println("***Esse correntista já possui uma conta adicional.***");
                     }
                 }else {
-                    System.out.println("Esse correntista não possui uma conta corrente para criar uma conta adicional.");
+                    System.out.println("***Esse correntista não possui uma conta corrente para criar uma conta adicional.***");
                 }
                 break;
             case 3:
@@ -328,12 +338,12 @@ public class Gerente extends Usuario {
                     //Chamando metodo para criar uma conta poupança
                     criarContaPoupanca(correntistaEncontrado);
                 }else {
-                    System.out.println("Esse correntista já possui uma conta poupanca.");
+                    System.out.println("***Esse correntista já possui uma conta poupanca.***");
                 }
                 break;
             default:
                 //Erro caso não escolha uma opção valida
-                System.out.println("Escolha uma opção válida.");
+                System.out.println("***Escolha uma opção válida.***");
         }
 
     }
@@ -349,36 +359,38 @@ public class Gerente extends Usuario {
         //Declarando conta conforme o numero lido
         Conta contaEncontrada = SistemaBanco.getContas().get(numContaAdicional);
 
-        //Erro para caso o nome esteja vazio
+        //Erro para caso o numero esteja vazio
         if (numContaAdicional.isEmpty()) {
-            System.out.println("O número da conta não pode ser vazio. Tente novamente.\n");
+            System.out.println("***O número da conta não pode ser vazio. Tente novamente.***\n");
             return;
         }
         //Verificando se a conta existe no sistema
         if (contaEncontrada == null){
-            System.out.println("Conta inexistente.");
+            System.out.println("***Conta inexistente.***");
             return;
         }
         //Verificando se é uma conta corrente adicional
         if (!contaEncontrada.getTipo().equals("adicional")) {
-            System.out.println("Essa não é uma conta corrente adicional.");
+            System.out.println("***Essa não é uma conta corrente adicional.***");
             return;
         }
 
         //Mostrando o limite da conta
-        System.out.printf("O limite dessa conta é R$ %.2f\n", contaEncontrada.getSaldo());
+        System.out.printf("***O limite dessa conta é R$ %.2f***\n", contaEncontrada.getSaldo());
         //Lendo o limite digitado
         System.out.println("Digite o novo valor de limite.");
         double novoLimite = input.nextDouble();
+
 
         //Declarando novo limite
         contaEncontrada.setSaldo(novoLimite);
         //Atualizando a conta no sistema
         SistemaBanco.adicionarConta(contaEncontrada);
         //Mostrando novo limite
-        System.out.printf("Limite alterado. Novo limite é R$ %.2f\n", contaEncontrada.getSaldo());
+        System.out.printf("***Limite alterado. Novo limite é R$ %.2f***\n", contaEncontrada.getSaldo());
     }
 
+    //Metodo para alterar senha de um usuario
     private void alterarSenhaUsuario() throws IOException {
         Scanner input = new Scanner(System.in);
 
@@ -386,12 +398,12 @@ public class Gerente extends Usuario {
         System.out.println("Informe o nome do usuário:");
         String nomeUsuario = input.nextLine();
         if (nomeUsuario.isEmpty()) {
-            System.out.println("O nome do correntista não pode ser vazio. Tente novamente.\n");
+            System.out.println("***O nome do correntista não pode ser vazio. Tente novamente.***\n");
             return;
         }
         //Verificando se o nome digitado já existe no sistema
         if (SistemaBanco.getUsuarios().get(nomeUsuario) == null) {
-            System.out.println("Usuário não encontrado.\n");
+            System.out.println("***Usuário não encontrado.***\n");
             return;
         }
 
@@ -399,39 +411,50 @@ public class Gerente extends Usuario {
         String novaSenha = input.nextLine();
         //Erro para caso a senha esteja vazia ou tenha espaços
         if (novaSenha.isEmpty() || novaSenha.contains(" ")) {
-            System.out.println("A senha não pode ser vazia nem conter espaços. Tente novamente.\n");
+            System.out.println("***A senha não pode ser vazia nem conter espaços. Tente novamente.***\n");
             return;
         }
         //Erro para caso a senha não tenha entre 4 e 7 caracteres
         if (novaSenha.length() < 4 || novaSenha.length() > 7) {
-            System.out.println("A senha deve conter entre 4 e 7 caracteres.\n");
+            System.out.println("***A senha deve conter entre 4 e 7 caracteres.***\n");
             return;
         }
 
+        //Declarando usuario encontrado
         Usuario usuarioEncontrado = SistemaBanco.getUsuarios().get(nomeUsuario);
+        //Alterando a senha
         usuarioEncontrado.setSenha(novaSenha);
+        //Salvando usuario no sistema
         SistemaBanco.adicionarUsuario(usuarioEncontrado);
 
+        //Verificando se o usuario é um correntista
         if (usuarioEncontrado instanceof Correntista correntista) {
+            //Declarando o numero das contas conforme o usuario encontrado
             Conta contaCorrente = SistemaBanco.getContas().get(correntista.getNumContaCorrente());
             Conta contaPoupanca = SistemaBanco.getContas().get(correntista.getNumContaPoupanca());
             Conta contaAdicional = SistemaBanco.getContas().get(correntista.getNumContaAdicional());
 
             if (contaCorrente != null) {
+                //Alterando senha da conta
                 contaCorrente.setSenha(novaSenha);
+                //Salvando a conta no sistema
                 SistemaBanco.adicionarConta(contaCorrente);
             }
             if (contaPoupanca != null) {
+                //Alterando senha da conta
                 contaPoupanca.setSenha(novaSenha);
+                //Salvando a conta no sistema
                 SistemaBanco.adicionarConta(contaPoupanca);
             }
             if (contaAdicional != null) {
+                //Alterando senha da conta
                 contaAdicional.setSenha(novaSenha);
+                //Salvando a conta no sistema
                 SistemaBanco.adicionarConta(contaAdicional);
             }
         }
 
-        System.out.println("Senha alterada com sucesso.");
+        System.out.println("***Senha alterada com sucesso.***");
 
     }
 
@@ -459,9 +482,11 @@ public class Gerente extends Usuario {
                 input.nextLine();
                 switch (opcao) {
                     case 1:
+                        //Chama o metodo para mostrar todos usuarios do sistema
                         mostrarUsuarios();
                         break;
                     case 2:
+                        //Chama o metodo para mostrar todas contas do sistema
                         mostrarContas();
                         break;
                     case 3:
@@ -481,6 +506,7 @@ public class Gerente extends Usuario {
                         alterarLimiteContaAdicional();
                         break;
                     case 7:
+                        //Chama o metodo para alterar a senha do usuario
                         alterarSenhaUsuario();
                         break;
                     case 0:
@@ -488,11 +514,11 @@ public class Gerente extends Usuario {
                         break;
                     default:
                         //Erro para caso digite uma opção invalida
-                        System.out.println("Opção invalida\n");
+                        System.out.println("***Opção invalida***\n");
                 }
             }catch (java.util.InputMismatchException e) {
                 //Erro para caso não seja digitado um número na opção
-                System.out.println("Entrada inválida. Por favor, insira um número.\n");
+                System.out.println("***Entrada inválida. Por favor, insira um número.***\n");
                 input.nextLine();
             }
         } while (opcao != 0);

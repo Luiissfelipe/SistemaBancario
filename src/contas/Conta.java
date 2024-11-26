@@ -61,8 +61,11 @@ public abstract class Conta {
     //Metodo para realizar deposito
     public void depositar(double valorDeposito) throws IOException {
         double novoSaldo = this.getSaldo() + valorDeposito;
+        //Atualizando saldo da conta
         this.setSaldo(novoSaldo);
+        //Declarando conta
         Conta conta = SistemaBanco.getContas().get(this.getNumeroConta());
+        //Atualizando conta no sistema
         SistemaBanco.adicionarConta(conta);
     }
 

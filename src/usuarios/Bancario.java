@@ -30,18 +30,19 @@ public class Bancario extends Usuario{
 
         //Erro para caso o numero esteja vazio
         if (numConta.isEmpty()) {
-            System.out.println("O número da conta não pode ser vazio. Tente novamente.\n");
+            System.out.println("***O número da conta não pode ser vazio. Tente novamente.***\n");
             return;
         }
         //Verificando se a conta existe
         if (contaEncontrada == null){
-            System.out.println("Conta inexistente.");
+            System.out.println("***Conta inexistente.***");
             return;
         }
+        //Verificando se é uma conta adicional
         if (contaEncontrada.getTipo().equals("adicional")) {
-            System.out.printf("O limite da conta adicional é R$ %.2f\n", contaEncontrada.getSaldo());
+            System.out.printf("***O limite da conta adicional é R$ %.2f***\n", contaEncontrada.getSaldo());
         } else {
-            System.out.printf("O saldo da conta é R$ %.2f\n", contaEncontrada.getSaldo());
+            System.out.printf("***O saldo da conta é R$ %.2f***\n", contaEncontrada.getSaldo());
         }
     }
 
@@ -59,17 +60,17 @@ public class Bancario extends Usuario{
 
         //Erro para caso o numero esteja vazio
         if (numConta.isEmpty()) {
-            System.out.println("O número da conta não pode ser vazio. Tente novamente.\n");
+            System.out.println("***O número da conta não pode ser vazio. Tente novamente.***\n");
             return;
         }
         //Verificando se a conta existe
         if (contaEncontrada == null){
-            System.out.println("Conta inexistente.");
+            System.out.println("***Conta inexistente.***");
             return;
         }
 
         //Mostrando saldo disponivel
-        System.out.printf("Saldo disponivel: R$ %.2f\n", contaEncontrada.getSaldo());
+        System.out.printf("***Saldo disponivel: R$ %.2f***\n", contaEncontrada.getSaldo());
 
         //Lendo o valor do saque
         System.out.println("Informe o valor do saque:");
@@ -78,7 +79,7 @@ public class Bancario extends Usuario{
 
         //Erro para caso o valor do saque seja menor ou igual a 0
         if (valorSaque <= 0) {
-            System.out.println("Valor de saque deve ser maior que 0.");
+            System.out.println("***Valor de saque deve ser maior que 0.***");
         } else {
             //Declarando senha como falsa
             boolean senhaCorreta = false;
@@ -90,7 +91,7 @@ public class Bancario extends Usuario{
 
                 //Erro para caso a senha esteja vazia ou tenha espaços
                 if (senha == null || senha.isEmpty() || senha.contains(" ")) {
-                    System.out.println("Senha não pode estar vazia e/ou conter espaços. Tente novamente.\n");
+                    System.out.println("***Senha não pode estar vazia e/ou conter espaços. Tente novamente.***\n");
                     return;
                 }
                 //Verificando se a senha esta correta
@@ -101,7 +102,7 @@ public class Bancario extends Usuario{
                     senhaCorreta = true;
                 } else {
                     //Erro caso a senha estiver incorreta
-                    System.out.println("Senha incorreta. Tente novamente.\n");
+                    System.out.println("***Senha incorreta. Tente novamente.***\n");
             }
         }
         }
@@ -109,102 +110,128 @@ public class Bancario extends Usuario{
 
     //Metodo para realizar deposito
     private void realizarDeposito() throws IOException {
+        //Declarando o scanner
         Scanner input = new Scanner(System.in);
 
+        //Lendo o numero da conta
         System.out.println("Informe o número da conta:");
         String numConta = input.nextLine();
+        //Declarando conta conforme o numero lido
         Conta contaEncontrada = SistemaBanco.getContas().get(numConta);
 
+        //Erro para caso o numero esteja vazio
         if (numConta.isEmpty()) {
-            System.out.println("O número da conta não pode ser vazio. Tente novamente.\n");
+            System.out.println("***O número da conta não pode ser vazio. Tente novamente.***\n");
             return;
         }
+        //Verificando se a conta existe no sistema
         if (contaEncontrada == null){
-            System.out.println("Conta inexistente.");
+            System.out.println("***Conta inexistente.***");
             return;
         }
+        //Verificando se é uma conta corrente adicional
         if (contaEncontrada.getTipo().equals("adicional")) {
-            System.out.println("Você não pode depositar em uma conta adicional.");
+            System.out.println("***Você não pode depositar em uma conta adicional.***");
             return;
         }
 
+        //Lendo o valor do deposito
         System.out.println("Informe o valor do depósito:");
         double valorDeposito = input.nextDouble();
 
+        //Erro caso o valor seja menor ou igual a 0
         if (valorDeposito <= 0) {
-            System.out.println("O valor do deposito deve ser maior que 0.");
+            System.out.println("***O valor do deposito deve ser maior que 0.***");
         } else {
             contaEncontrada.depositar(valorDeposito);
-            System.out.printf("Deposito de R$ %.2f realizado com sucesso.\n", valorDeposito);
+            System.out.printf("***Deposito de R$ %.2f realizado com sucesso.***\n", valorDeposito);
         }
 
     }
 
     //Metodo para realizar transferencia
     private void realizarTransferencia() throws IOException {
+        //Declarando o scanner
         Scanner input = new Scanner(System.in);
 
+        //Lendo o numero da conta de origem
         System.out.println("Informe o número da conta de origem:");
         String numContaOrigem = input.nextLine();
+        //Declarando conta de origem conforme o numero lido
         Conta contaOrigemEncontrada = SistemaBanco.getContas().get(numContaOrigem);
 
+        //Erro para caso o numero esteja vazio
         if (numContaOrigem.isEmpty()) {
-            System.out.println("O número da conta não pode ser vazio. Tente novamente.\n");
+            System.out.println("***O número da conta não pode ser vazio. Tente novamente.***\n");
             return;
         }
+        //Verificando se a conta existe no sistema
         if (contaOrigemEncontrada == null){
-            System.out.println("Conta inexistente.");
+            System.out.println("***Conta inexistente.***");
             return;
         }
+        //Verificando se é uma conta corrente adicional
         if (contaOrigemEncontrada.getTipo().equals("adicional")) {
-            System.out.println("Não é possível realizar transferência de uma conta corrente adicional.");
+            System.out.println("***Não é possível realizar transferência de uma conta corrente adicional.***");
             return;
         }
 
+        //Lendo o numero da conta de destino
         System.out.println("Informe o número da conta de destino:");
         String numContaDestino = input.nextLine();
+        //Declarando conta de destino conforme o numero lido
         Conta contaDestinoEncontrada = SistemaBanco.getContas().get(numContaDestino);
 
+        //Erro para caso o numero esteja vazio
         if (numContaDestino.isEmpty()) {
-            System.out.println("O número da conta não pode ser vazio. Tente novamente.\n");
+            System.out.println("***O número da conta não pode ser vazio. Tente novamente.***\n");
             return;
         }
+        //Verificando se a conta existe no sistema
         if (contaDestinoEncontrada == null){
-            System.out.println("Conta inexistente.");
+            System.out.println("***Conta inexistente.***");
             return;
         }
+        //Verificando se é uma conta corrente adicional
         if (contaDestinoEncontrada.getTipo().equals("adicional")){
-            System.out.println("Não é possivel transferir para uma conta corrente adicional.");
+            System.out.println("***Não é possivel transferir para uma conta corrente adicional.***");
             return;
         }
+        //Verificando se a conta de destino é a mesma da de origem
         if (numContaDestino.equals(numContaOrigem)) {
-            System.out.println("Não é possivel transferir para a mesma conta.");
+            System.out.println("***Não é possivel transferir para a mesma conta.***");
             return;
         }
 
         //Mostrando saldo disponivel da conta de origem
-        System.out.printf("Saldo disponivel da conta de origem: R$ %.2f\n", contaOrigemEncontrada.getSaldo());
+        System.out.printf("***Saldo disponivel da conta de origem: R$ %.2f***\n", contaOrigemEncontrada.getSaldo());
 
+        //Lendo o valor da transferencia
         System.out.println("Informe o valor da tranferência:");
         double valorTransferencia = input.nextDouble();
         input.nextLine();
+        //Erro caso o valor seja menor ou igual a 0
         if (valorTransferencia <= 0) {
-            System.out.println("Valor da tranferência deve ser maior que 0.");
+            System.out.println("***Valor da tranferência deve ser maior que 0.***");
         }
+        //Loop para verificar se a senha esta correta
         boolean senhaCorreta = false;
         while (!senhaCorreta) {
+            //Lendo a senha
             System.out.println("Informe a senha da conta de origem:");
             String senha = input.nextLine();
-
+            //Erro para caso a senha esteja vazia ou tenha espaços
             if (senha == null || senha.isEmpty() || senha.contains(" ")) {
-                System.out.println("Senha não pode estar vazia e/ou conter espaços. Tente novamente.\n");
+                System.out.println("***Senha não pode estar vazia e/ou conter espaços. Tente novamente.***\n");
                 return;
             }
+            //Verificando se a senha informada esta correta
             if (contaOrigemEncontrada.autenticar(senha)) {
+                //Chamando o metodo para transferir
                 contaOrigemEncontrada.transferir(contaDestinoEncontrada, valorTransferencia);
                 senhaCorreta = true;
             } else {
-                System.out.println("Senha incorreta. Tente novamente.\n");
+                System.out.println("***Senha incorreta. Tente novamente.***\n");
             }
         }
 
@@ -213,19 +240,25 @@ public class Bancario extends Usuario{
 
     //Metodo para calcular rendimento da conta poupança
     private void calcularRendimento() {
+        //Declarando o scanner
         Scanner input = new Scanner(System.in);
 
         boolean autenticado = false;
 
+        //Loop para não voltar ao menu
         while (!autenticado) {
+            //Lendo o numero da conta
             System.out.println("Informe o número da Conta Poupança:");
             String numContaPoupanca = input.nextLine();
+            //Declarando conta conforme o numero lido
             Conta contaEncontrada = SistemaBanco.getContas().get(numContaPoupanca);
 
+            //Erro para caso o numero esteja vazio
             if (numContaPoupanca.isEmpty()) {
                 System.out.println("O número da conta não pode ser vazio. Tente novamente.\n");
                 continue;
             }
+            //Verificando se a conta existe no sistema
             if (contaEncontrada == null){
                 System.out.println("Conta inexistente.");
                 continue;
@@ -257,6 +290,7 @@ public class Bancario extends Usuario{
         }
     }
 
+    //Metodo para calcular a divida do cheque especial
     private void calcularDividaChequeEspecial() {
         Scanner input = new Scanner(System.in);
 
@@ -362,11 +396,11 @@ public class Bancario extends Usuario{
                         break;
                     default:
                         //Erro para caso digite uma opção invalida
-                        System.out.println("Opção invalida\n");
+                        System.out.println("***Opção invalida***\n");
                 }
             }catch (java.util.InputMismatchException e) {
                 //Erro para caso não seja digitado um número na opção
-                System.out.println("Entrada inválida. Por favor, insira um número.\n");
+                System.out.println("***Entrada inválida. Por favor, insira um número.***\n");
                 input.nextLine();
             }
         } while (opcao != 0);

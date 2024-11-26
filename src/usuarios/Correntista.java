@@ -167,7 +167,7 @@ public class Correntista extends Usuario{
         }
     }
 
-    //Menu de opçoes para o gerente
+    //Menu de opçoes para o correntista
     public void menuCorrentista() throws IOException {
         Scanner input = new Scanner(System.in);
 

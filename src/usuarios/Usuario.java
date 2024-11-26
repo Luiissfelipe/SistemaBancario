@@ -1,7 +1,5 @@
 package usuarios;
 
-import java.util.Scanner;
-
 public class Usuario {
     //Atributos do usuario
     private String nome;
@@ -15,17 +13,15 @@ public class Usuario {
         this.nivelUsuario = nivelUsuario;
     }
 
-    //Getter do nome do usuario
+    //Getters e Setters
     public String getNome() {
         return nome;
     }
 
-    //Getter da senha do usuario
     public String getSenha() {
         return senha;
     }
 
-    //Getter do nivel do usuario
     public String getNivelUsuario() {
         return nivelUsuario;
     }

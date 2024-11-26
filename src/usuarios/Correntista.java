@@ -87,7 +87,7 @@ public class Correntista extends Usuario{
                     return;
                 }
                 if (contaEncontrada.autenticar(senha)) {
-                    contaEncontrada.sacar(contaEncontrada, valorSaque);
+                    contaEncontrada.sacar(valorSaque);
                     senhaCorreta = true;
                 } else {
                     System.out.println("Senha incorreta. Tente novamente.\n");
@@ -109,7 +109,7 @@ public class Correntista extends Usuario{
         if (valorDeposito <= 0) {
             System.out.println("O valor do deposito deve ser maior que 0.");
         } else {
-            contaEncontrada.depositar(contaEncontrada, valorDeposito);
+            contaEncontrada.depositar(valorDeposito);
             System.out.printf("Deposito de R$ %.2f realizado com sucesso.\n", valorDeposito);
         }
     }
@@ -159,7 +159,7 @@ public class Correntista extends Usuario{
                 return;
             }
             if (contaEncontrada.autenticar(senha)) {
-                contaEncontrada.transferir(contaEncontrada, contaDestinoEncontrada, valorTransferencia);
+                contaEncontrada.transferir(contaDestinoEncontrada, valorTransferencia);
                 senhaCorreta = true;
             } else {
                 System.out.println("Senha incorreta. Tente novamente.\n");

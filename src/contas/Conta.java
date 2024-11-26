@@ -3,15 +3,16 @@ package contas;
 import sistema.SistemaBanco;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 public abstract class Conta {
+    //Atributos da conta
     private String numeroConta;
     private String titular;
     private String senha;
     private double saldo;
     private String tipo;
 
+    //Construtor da conta
     public Conta(String numeroConta, String titular, String senha, String tipo) {
         this.numeroConta = numeroConta;
         this.titular = titular;
@@ -20,6 +21,7 @@ public abstract class Conta {
         this.saldo = 0.0;
     }
 
+    //Getters e Setters
     public String getNumeroConta() {
         return numeroConta;
     }
@@ -48,19 +50,24 @@ public abstract class Conta {
         this.saldo = saldo;
     }
 
+    //Metodo para conferir se a senha informada é igual a da conta
     public boolean autenticar(String senha) {
         return this.senha.equals(senha);
     }
 
-    public abstract void sacar(Conta conta, double valorSaque) throws IOException;
+    //Metodo para realizar saque
+    public abstract void sacar(double valorSaque) throws IOException;
 
-    public void depositar(Conta conta, double valorDeposito) throws IOException {
-        double novoSaldo = conta.getSaldo() + valorDeposito;
-        conta.setSaldo(novoSaldo);
+    //Metodo para realizar deposito
+    public void depositar(double valorDeposito) throws IOException {
+        double novoSaldo = this.getSaldo() + valorDeposito;
+        this.setSaldo(novoSaldo);
+        Conta conta = SistemaBanco.getContas().get(this.getNumeroConta());
         SistemaBanco.adicionarConta(conta);
     }
 
-    public abstract void transferir(Conta contaOrigemEncontrada, Conta contaDestinoEncontrada, Double valorTransferencia) throws IOException;
+    //Metodo para realizar transferencia
+    public abstract void transferir(Conta contaDestino, Double valorTransferencia) throws IOException;
 
     @Override
     public String toString() {

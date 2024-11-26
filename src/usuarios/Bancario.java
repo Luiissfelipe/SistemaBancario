@@ -16,6 +16,35 @@ public class Bancario extends Usuario{
         super(nome, senha, "bancario");
     }
 
+    //Metodo para mostrar o saldo de uma conta
+    private void mostrarSaldo() {
+        //Declarando scanner
+        Scanner input = new Scanner(System.in);
+
+        //Lendo numero da conta
+        System.out.println("Informe o número da conta:");
+        String numConta = input.nextLine();
+
+        //Declarando conta conforme numero lido
+        Conta contaEncontrada = SistemaBanco.getContas().get(numConta);
+
+        //Erro para caso o numero esteja vazio
+        if (numConta.isEmpty()) {
+            System.out.println("O número da conta não pode ser vazio. Tente novamente.\n");
+            return;
+        }
+        //Verificando se a conta existe
+        if (contaEncontrada == null){
+            System.out.println("Conta inexistente.");
+            return;
+        }
+        if (contaEncontrada.getTipo().equals("adicional")) {
+            System.out.printf("O limite da conta adicional é R$ %.2f\n", contaEncontrada.getSaldo());
+        } else {
+            System.out.printf("O saldo da conta é R$ %.2f\n", contaEncontrada.getSaldo());
+        }
+    }
+
     //Metodo para realizar saque
     private void realizarSaque() throws IOException {
         //Declarando scanner
@@ -67,7 +96,7 @@ public class Bancario extends Usuario{
                 //Verificando se a senha esta correta
                 if (contaEncontrada.autenticar(senha)) {
                     //Chamando o metodo para sacar
-                    contaEncontrada.sacar(contaEncontrada, valorSaque);
+                    contaEncontrada.sacar(valorSaque);
                     //Declarando senha como verdadeira para encerrar o loop
                     senhaCorreta = true;
                 } else {
@@ -105,7 +134,7 @@ public class Bancario extends Usuario{
         if (valorDeposito <= 0) {
             System.out.println("O valor do deposito deve ser maior que 0.");
         } else {
-            contaEncontrada.depositar(contaEncontrada, valorDeposito);
+            contaEncontrada.depositar(valorDeposito);
             System.out.printf("Deposito de R$ %.2f realizado com sucesso.\n", valorDeposito);
         }
 
@@ -153,6 +182,9 @@ public class Bancario extends Usuario{
             return;
         }
 
+        //Mostrando saldo disponivel da conta de origem
+        System.out.printf("Saldo disponivel da conta de origem: R$ %.2f\n", contaOrigemEncontrada.getSaldo());
+
         System.out.println("Informe o valor da tranferência:");
         double valorTransferencia = input.nextDouble();
         input.nextLine();
@@ -169,7 +201,7 @@ public class Bancario extends Usuario{
                 return;
             }
             if (contaOrigemEncontrada.autenticar(senha)) {
-                contaOrigemEncontrada.transferir(contaOrigemEncontrada, contaDestinoEncontrada, valorTransferencia);
+                contaOrigemEncontrada.transferir(contaDestinoEncontrada, valorTransferencia);
                 senhaCorreta = true;
             } else {
                 System.out.println("Senha incorreta. Tente novamente.\n");
@@ -220,7 +252,7 @@ public class Bancario extends Usuario{
                 autenticado = true;
                 ContaPoupanca contaPoupanca = (ContaPoupanca) contaEncontrada;
                 System.out.printf("Saldo atual: R$ %.2f\n", contaPoupanca.getSaldo());
-                contaPoupanca.calcularRendimento(contaPoupanca, taxaRendimento, meses);
+                contaPoupanca.calcularRendimento(taxaRendimento, meses);
             }
         }
     }
@@ -289,11 +321,12 @@ public class Bancario extends Usuario{
         do {
             System.out.print("""
                         Escolha uma opção:
-                        [1] Realizar saque
-                        [2] Realizar depósito
-                        [3] Realizar transferência
-                        [4] Calcular rendimento de conta poupança
-                        [5] Calcular dívida do cheque especial
+                        [1] Ver saldo de conta
+                        [2] Realizar saque
+                        [3] Realizar depósito
+                        [4] Realizar transferência
+                        [5] Calcular rendimento de conta poupança
+                        [6] Calcular dívida do cheque especial
                         [0] Sair
                         """);
             try {
@@ -303,21 +336,25 @@ public class Bancario extends Usuario{
                 input.nextLine();
                 switch (opcao) {
                     case 1:
+                        //Chama o metodo para mostrar o saldo
+                        mostrarSaldo();
+                        break;
+                    case 2:
                         //Chama o metodo para realizar saque
                         realizarSaque();
                         break;
-                    case 2:
+                    case 3:
                         //Chama o metodo para realizar deposito
                         realizarDeposito();
                         break;
-                    case 3:
+                    case 4:
                         //Chama o metodo para realizar transferencia
                         realizarTransferencia();
                         break;
-                    case 4:
+                    case 5:
                         calcularRendimento();
                         break;
-                    case 5:
+                    case 6:
                         calcularDividaChequeEspecial();
                         break;
                     case 0:

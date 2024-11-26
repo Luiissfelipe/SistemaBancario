@@ -281,13 +281,12 @@ public class Gerente extends Usuario {
         }
 
         //Verificando se o usuario é um correntista
-        if (!(SistemaBanco.getUsuarios().get(nomeCorrentista) instanceof Correntista)) {
+        if (!(SistemaBanco.getUsuarios().get(nomeCorrentista) instanceof Correntista correntistaEncontrado)) {
             System.out.println("O nome digitado não pertence a um correntista.\n");
             return;
         }
 
         //Declarando correntista encontrado
-        Correntista correntistaEncontrado = (Correntista) SistemaBanco.getUsuarios().get(nomeCorrentista);
 
         //Opção para criar conta
         System.out.println("""

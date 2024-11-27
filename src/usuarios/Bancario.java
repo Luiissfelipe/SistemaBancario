@@ -2,6 +2,7 @@ package usuarios;
 
 import contas.Conta;
 import contas.ContaCorrente;
+import contas.ContaCorrenteAdicional;
 import contas.ContaPoupanca;
 import sistema.SistemaBanco;
 
@@ -43,6 +44,16 @@ public class Bancario extends Usuario{
             System.out.printf("***O limite da conta adicional é R$ %.2f***\n", contaEncontrada.getSaldo());
         } else {
             System.out.printf("***O saldo da conta é R$ %.2f***\n", contaEncontrada.getSaldo());
+            //Verificando se é conta corrente
+            if (contaEncontrada instanceof ContaCorrente contaCorrente) {
+                //Verificando se possui cheque especial
+                if (contaCorrente.isChequeEspecial()) {
+                    //Mostrando o limite do cheque especial
+                    System.out.printf("***Limite de cheque especial R$ %.2f***\n", contaCorrente.getLimiteChequeEspecial());
+                }else {
+                    System.out.println("***Essa conta não possui cheque especial.***");
+                }
+            }
         }
     }
 
@@ -69,8 +80,25 @@ public class Bancario extends Usuario{
             return;
         }
 
-        //Mostrando saldo disponivel
-        System.out.printf("***Saldo disponivel: R$ %.2f***\n", contaEncontrada.getSaldo());
+        //Verificando se é uma conta adicional
+        if(contaEncontrada instanceof ContaCorrenteAdicional) {
+            //Mostrando limite da conta adicional
+            System.out.printf("***Limite disponivel: R$ %.2f***\n", contaEncontrada.getSaldo());
+        } else {
+            //Mostrando saldo das outras contas
+            System.out.printf("***Saldo disponivel: R$ %.2f***\n", contaEncontrada.getSaldo());
+        }
+
+        //Verificando se é conta corrente
+        if (contaEncontrada instanceof ContaCorrente contaCorrente) {
+            //Verificando se possui cheque especial
+            if (contaCorrente.isChequeEspecial()) {
+                //Mostrando o limite do cheque especial
+                System.out.printf("***Limite de cheque especial R$ %.2f***\n", contaCorrente.getLimiteChequeEspecial());
+            }else {
+                System.out.println("***Essa conta não possui cheque especial.***");
+            }
+        }
 
         //Lendo o valor do saque
         System.out.println("Informe o valor do saque:");
@@ -206,6 +234,17 @@ public class Bancario extends Usuario{
         //Mostrando saldo disponivel da conta de origem
         System.out.printf("***Saldo disponivel da conta de origem: R$ %.2f***\n", contaOrigemEncontrada.getSaldo());
 
+        //Verificando se é conta corrente
+        if (contaOrigemEncontrada instanceof ContaCorrente contaCorrente) {
+            //Verificando se possui cheque especial
+            if (contaCorrente.isChequeEspecial()) {
+                //Mostrando o limite do cheque especial
+                System.out.printf("***Limite de cheque especial R$ %.2f***\n", contaCorrente.getLimiteChequeEspecial());
+            }else {
+                System.out.println("***Essa conta não possui cheque especial.***");
+            }
+        }
+
         //Lendo o valor da transferencia
         System.out.println("Informe o valor da tranferência:");
         double valorTransferencia = input.nextDouble();
@@ -213,6 +252,7 @@ public class Bancario extends Usuario{
         //Erro caso o valor seja menor ou igual a 0
         if (valorTransferencia <= 0) {
             System.out.println("***Valor da tranferência deve ser maior que 0.***");
+            return;
         }
         //Loop para verificar se a senha esta correta
         boolean senhaCorreta = false;
@@ -229,6 +269,7 @@ public class Bancario extends Usuario{
             if (contaOrigemEncontrada.autenticar(senha)) {
                 //Chamando o metodo para transferir
                 contaOrigemEncontrada.transferir(contaDestinoEncontrada, valorTransferencia);
+                //Declarando a senha como verdadeira para encerrar o loop
                 senhaCorreta = true;
             } else {
                 System.out.println("***Senha incorreta. Tente novamente.***\n");
@@ -255,36 +296,46 @@ public class Bancario extends Usuario{
 
             //Erro para caso o numero esteja vazio
             if (numContaPoupanca.isEmpty()) {
-                System.out.println("O número da conta não pode ser vazio. Tente novamente.\n");
+                System.out.println("***O número da conta não pode ser vazio. Tente novamente.***\n");
                 continue;
             }
             //Verificando se a conta existe no sistema
             if (contaEncontrada == null){
-                System.out.println("Conta inexistente.");
+                System.out.println("***Conta inexistente.***");
                 continue;
             }
+            //Verificando se é uma conta poupança
             if (!contaEncontrada.getTipo().equals("poupanca")) {
-                System.out.println("O número informado não pertence a uma Conta Poupança");
+                System.out.println("***O número informado não pertence a uma Conta Poupança***");
                 continue;
             }
 
+            //Loop para informar a taxa e a quantidade de meses
             while (!autenticado) {
+                //Lendo o valor da taxa
                 System.out.println("Informe a taxa de rendimento mensal: [%]");
                 double taxaRendimento = input.nextDouble();
+                //Erro caso a taxa seja menor que 0
                 if (taxaRendimento < 0) {
-                    System.out.println("A taxa de rendimento não pode ser menor que 0.");
+                    System.out.println("***A taxa de rendimento não pode ser menor que 0.***");
                     continue;
                 }
+                //Lendo a quantidade de meses
                 System.out.println("Informe a quantidade de meses de incidência");
                 int meses = input.nextInt();
+                //Erro caso seja menor ou igual a 0
                 if (meses <= 0) {
-                    System.out.println("A quantidade de meses deve ser maior que 0.");
+                    System.out.println("*** quantidade de meses deve ser maior que 0.***");
                     continue;
                 }
 
+                //Declarando como true para fechar o loop
                 autenticado = true;
+                //Declarando a conta poupança
                 ContaPoupanca contaPoupanca = (ContaPoupanca) contaEncontrada;
-                System.out.printf("Saldo atual: R$ %.2f\n", contaPoupanca.getSaldo());
+                //Informando o saldo da conta
+                System.out.printf("***Saldo atual: R$ %.2f***\n", contaPoupanca.getSaldo());
+                //Chamando o metodo para calcular o rendimento
                 contaPoupanca.calcularRendimento(taxaRendimento, meses);
             }
         }
@@ -292,53 +343,69 @@ public class Bancario extends Usuario{
 
     //Metodo para calcular a divida do cheque especial
     private void calcularDividaChequeEspecial() {
+        //Declarando o scanner
         Scanner input = new Scanner(System.in);
 
         boolean autenticado = false;
-
+        //Loop para não voltar ao menu
         while (!autenticado) {
+            //Lendo o numero da conta
             System.out.println("Informe o número da Conta Corrente:");
             String numContaCorrente = input.nextLine();
+            //Declarando conta conforme o numero lido
             Conta contaEncontrada = SistemaBanco.getContas().get(numContaCorrente);
 
+            //Erro para caso o numero esteja vazio
             if (numContaCorrente.isEmpty()) {
-                System.out.println("O número da conta não pode ser vazio. Tente novamente.\n");
+                System.out.println("***O número da conta não pode ser vazio. Tente novamente.***\n");
                 continue;
             }
+            //Verificando se a conta existe no sistema
             if (contaEncontrada == null){
-                System.out.println("Conta inexistente.");
+                System.out.println("***Conta inexistente.***");
                 continue;
             }
+            //Verificando se é uma conta poupança
             if (!contaEncontrada.getTipo().equals("corrente")) {
-                System.out.println("Esse número não pertence a uma conta corrente.");
+                System.out.println("***Esse número não pertence a uma conta corrente.***");
                 continue;
             }
+            //Verificando se a conta possui cheque especial
             ContaCorrente contaCorrente = (ContaCorrente) contaEncontrada;
             if (!contaCorrente.isChequeEspecial()) {
-                System.out.println("Essa conta não possui opção de cheque especial.");
+                System.out.println("***Essa conta não possui opção de cheque especial.***");
                 continue;
             }
+            //Verificando se a conta está utilizando o cheque especial
             if (contaCorrente.getSaldo() >= 0) {
-                System.out.println("Essa conta não está utilizando o cheque especial.");
+                System.out.println("***Essa conta não está utilizando o cheque especial.***");
                 continue;
             }
 
+            //Loop para informar a taxa e a quantidade de meses
             while (!autenticado) {
+                //Lendo o valor da taxa
                 System.out.println("Informe a taxa de juros mensal: [%]");
                 double taxaJuros = input.nextDouble();
+                //Erro caso a taxa seja menor que 0
                 if (taxaJuros < 0) {
-                    System.out.println("A taxa de juros não pode ser menor que 0.");
+                    System.out.println("***A taxa de juros não pode ser menor que 0.***");
                     continue;
                 }
+                //Lendo a quantidade de meses
                 System.out.println("Informe a quantidade de meses de incidência");
                 int meses = input.nextInt();
+                //Erro caso seja menor ou igual a 0
                 if (meses <= 0) {
-                    System.out.println("A quantidade de meses deve ser maior que 0.");
+                    System.out.println("***A quantidade de meses deve ser maior que 0.***");
                     continue;
                 }
 
+                //Declarando como true para fechar o loop
                 autenticado = true;
-                System.out.printf("Essa conta está utilizando R$ %.2f de cheque especial.\n", Math.abs(contaCorrente.getSaldo()));
+                //Informando o saldo da conta
+                System.out.printf("***Essa conta está utilizando R$ %.2f de cheque especial.***\n", Math.abs(contaCorrente.getSaldo()));
+                //Chamando o metodo para calcular a dívida
                 contaCorrente.calcularDividaChequeEspecial(taxaJuros, meses);
             }
         }
@@ -386,9 +453,11 @@ public class Bancario extends Usuario{
                         realizarTransferencia();
                         break;
                     case 5:
+                        //Chama o metoto para calcular o rendimento
                         calcularRendimento();
                         break;
                     case 6:
+                        //Chama o metodo para calcular a divida
                         calcularDividaChequeEspecial();
                         break;
                     case 0:

@@ -1,2 +1,8 @@
-NivelUsuario,Nome,Senha,ContaCorrente,ContaPoupanca,ContaAdicional
+Usuários:
+correntista,Samuel,1013,CC13950,null,null
+bancario,Luis,1011
+correntista,Gustavo,1012,CC14853,null,CA41999
+gerente,Abner,1010
 admin,admin,1234
+correntista,Jhonatan,1014,CC27943,null,null
+correntista,Lucas,1016,null,CP27702,null

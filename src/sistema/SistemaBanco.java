@@ -54,7 +54,7 @@ public class SistemaBanco {
         if (!arquivo.exists()) {
             //Cria o arquivo de texto e escreve o titulo e o usuario admin
             try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo))){
-                escritor.write("NivelUsuario,Nome,Senha,ContaCorrente,ContaPoupanca,ContaAdicional\n");
+                escritor.write("Usuários:\n");
                 escritor.write("admin,admin,1234\n");
             }
         }
@@ -68,7 +68,7 @@ public class SistemaBanco {
         if (!arquivo.exists()) {
             //Cria o arquivo de texto e escreve o titulo
             try (BufferedWriter escritor = new BufferedWriter(new FileWriter(arquivo))){
-                escritor.write("NumeroConta,TipoConta,Titular,Senha,Saldo,ChequeEspecial,LimiteCheque\n");
+                escritor.write("Contas:\n");
             }
         }
     }
@@ -77,7 +77,7 @@ public class SistemaBanco {
     public static void salvarUsuarios(Map<String, Usuario> usuarios) throws IOException{
         //Cria o titulo do arquivo de texto
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(USUARIOS_TXT))) {
-            escritor.write("NivelUsuario,Nome,Senha,ContaCorrente,ContaPoupanca,ContaAdicional\n");
+            escritor.write("Usuários:\n");
 
             //Loop para percorrer o map e escrever cada um no arquivo de texto
             for (Map.Entry<String, Usuario> entrada : usuarios.entrySet()) {
@@ -97,7 +97,7 @@ public class SistemaBanco {
     public static void salvarContas(Map<String, Conta> contas) throws IOException {
         //Cria o titulo do arquivo de texto
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(CONTAS_TXT))) {
-            escritor.write("NumeroConta,TipoConta,Titular,Senha,Saldo,ChequeEspecial,LimiteCheque\n");
+            escritor.write("Contas:\n");
 
             //Loop para percorrer o map e escrever cada um no arquivo de texto
             for (Map.Entry<String, Conta> entrada : contas.entrySet()) {
@@ -106,7 +106,13 @@ public class SistemaBanco {
                 if (conta instanceof ContaCorrente contaC) {
                     escritor.write(contaC.getNumeroConta() + "," + contaC.getTipo() + "," + contaC.getTitular() + "," + contaC.getSenha()
                             + "," + contaC.getSaldo() + "," + contaC.isChequeEspecial() + "," + contaC.getLimiteChequeEspecial() +"\n");
-                }else {
+                }
+                //Verificando se é uma conta corrente adicional
+                else if (conta instanceof ContaCorrenteAdicional contaA) {
+                    escritor.write(contaA.getNumeroConta() + "," + contaA.getTipo() + "," + contaA.getTitular() + "," + contaA.getSenha()
+                            + "," + contaA.getSaldo() + "," + contaA.getDependente() + "\n");
+                }
+                else {
                     escritor.write(conta.getNumeroConta() + "," + conta.getTipo() + "," + conta.getTitular() + "," + conta.getSenha()
                             + "," + conta.getSaldo() + "\n");
                 }
@@ -194,26 +200,27 @@ public class SistemaBanco {
                     contaCorrente.setLimiteChequeEspecial(limiteChequeEspecial);
                     //Salva a conta corrente no map de contas
                     adicionarConta(contaCorrente);
+                }
+                //Verificando se é uma conta corrente adicional
+                else if (tipoConta.equals("adicional") && partes.length == 6) {
+                    //Declarando dados da conta corrente adicional
+                    String dependente = partes[5];
+
+                    //Criando conta poupança conforme os dados lidos
+                    ContaCorrenteAdicional contaCorrenteAdicional = new ContaCorrenteAdicional(numeroConta, titular, senha);
+                    //Adicionando saldo da conta adicional
+                    contaCorrenteAdicional.setSaldo(saldo);
+                    //Adicionando nome do dependente
+                    contaCorrenteAdicional.setDependente(dependente);
+                    //Salva a conta poupança no map de contas
+                    adicionarConta(contaCorrenteAdicional);
                 } else {
-                    //Verificando o tipo da conta
-                    switch (tipoConta) {
-                        case "poupanca":
-                            //Criando conta poupança conforme os dados lidos
-                            ContaPoupanca contaPoupanca = new ContaPoupanca(numeroConta, titular, senha);
-                            //Adicionando saldo da conta poupança
-                            contaPoupanca.setSaldo(saldo);
-                            //Salva a conta poupança no map de contas
-                            adicionarConta(contaPoupanca);
-                            break;
-                        case "adicional":
-                            //Criando conta poupança conforme os dados lidos
-                            ContaCorrenteAdicional contaCorrenteAdicional = new ContaCorrenteAdicional(numeroConta, titular, senha);
-                            //Adicionando saldo da conta adicional
-                            contaCorrenteAdicional.setSaldo(saldo);
-                            //Salva a conta poupança no map de contas
-                            adicionarConta(contaCorrenteAdicional);
-                            break;
-                    }
+                    //Criando conta poupança conforme os dados lidos
+                    ContaPoupanca contaPoupanca = new ContaPoupanca(numeroConta, titular, senha);
+                    //Adicionando saldo da conta poupança
+                    contaPoupanca.setSaldo(saldo);
+                    //Salva a conta poupança no map de contas
+                    adicionarConta(contaPoupanca);
                 }
             }
         }

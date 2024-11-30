@@ -43,8 +43,8 @@ public class Gerente extends Usuario {
             Conta conta = entrada.getValue();
             //Verificando se é uma conta corrente adicional
             if (conta instanceof ContaCorrenteAdicional contaAdc) {
-                System.out.printf("Nº: %s [%s] - Titular: %s - Limite: R$ %.2f\n", contaAdc.getNumeroConta(), contaAdc.getTipo(),
-                        contaAdc.getTitular(), contaAdc.getSaldo());
+                System.out.printf("Nº: %s [%s] - Titular: %s - Dependente: %s - Limite: R$ %.2f\n", contaAdc.getNumeroConta(),
+                        contaAdc.getTipo(), contaAdc.getTitular(), contaAdc.getDependente(), contaAdc.getSaldo());
             }else {
                 System.out.printf("Nº: %s [%s] - Titular: %s - Saldo: R$ %.2f\n", conta.getNumeroConta(), conta.getTipo(),
                         conta.getTitular(), conta.getSaldo());
@@ -255,6 +255,16 @@ public class Gerente extends Usuario {
             //Se existir ele volta e gera outro
             return;
         }
+
+        //Leitura do nome do dependente
+        System.out.println("Digite o nome do dependente:");
+        String nomeDependente = input.nextLine();
+        //Erro para caso o nome esteja vazio
+        if (nomeDependente.isEmpty()) {
+            System.out.println("***O nome do dependente não pode ser vazio. Tente novamente.***\n");
+            return;
+        }
+
         //Lendo o limite da conta adicional
         System.out.println("Digite o valor do limite da Conta Adicional:");
         double limite = input.nextDouble();
@@ -262,11 +272,14 @@ public class Gerente extends Usuario {
         ContaCorrenteAdicional contaCorrenteAdicional = new ContaCorrenteAdicional(numContaAdicional, correntista.getNome(), correntista.getSenha());
         //Declarando o limite da conta
         contaCorrenteAdicional.setSaldo(limite);
+        //Declarando nome do dependente
+        contaCorrenteAdicional.setDependente(nomeDependente);
         //Adicionando a conta no sistema
         SistemaBanco.adicionarConta(contaCorrenteAdicional);
         //Atualizando o usuario no sistema
         SistemaBanco.adicionarUsuario(correntista);
-        System.out.printf("***Conta corrente adicional criada com um limite de R$ %.2f***\n", contaCorrenteAdicional.getSaldo());
+        System.out.printf("***Conta corrente adicional criada para o dependente %s com um limite de R$ %.2f***\n",
+                contaCorrenteAdicional.getDependente(), contaCorrenteAdicional.getSaldo());
         //Mostrando o número da conta criada
         System.out.printf("***Número da conta: %s***\n", contaCorrenteAdicional.getNumeroConta());
     }

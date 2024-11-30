@@ -6,10 +6,21 @@ import usuarios.Correntista;
 import java.io.IOException;
 
 public class ContaCorrenteAdicional extends Conta{
+    //Atributos da conta
+    private String dependente;
 
     //Construtor da conta corrente adicional, ja cria com o tipo de conta
     public ContaCorrenteAdicional(String numeroConta, String titular, String senha) {
         super(numeroConta, titular, senha, "adicional");
+    }
+
+    //Getters e Setters
+    public String getDependente() {
+        return dependente;
+    }
+
+    public void setDependente(String dependente) {
+        this.dependente = dependente;
     }
 
     //Metodo para realizar saque
@@ -56,7 +67,7 @@ public class ContaCorrenteAdicional extends Conta{
 
     @Override
     public void transferir(Conta contaDestinoEncontrada, Double valorTransferencia) throws IOException {
-        System.out.println("***Não é possivel realizar transference de um conta adicional.***");
+        System.out.println("***Não é possivel realizar transferencia de um conta adicional.***");
     }
 
 }

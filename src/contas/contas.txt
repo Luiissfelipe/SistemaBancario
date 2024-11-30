@@ -1,1 +1,6 @@
-NumeroConta,TipoConta,Titular,Senha,Saldo,ChequeEspecial,LimiteCheque
+Contas:
+CC14853,corrente,Gustavo,1012,2620.0,false,0.0
+CC13950,corrente,Samuel,1013,-990.0,true,1000.0
+CC27943,corrente,Jhonatan,1014,2100.0,true,1000.0
+CP27702,poupanca,Lucas,1016,10910.0
+CA41999,adicional,Gustavo,1012,9800.0,Gabriela

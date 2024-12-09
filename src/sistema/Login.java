@@ -28,8 +28,10 @@ public class Login {
         //Loop para digitar o nome e senha
         //Enquanto o login não for feito, o loop se repete
         while (!loginRealizado) {
+            //Mensagem de inicio
+            System.out.println("Informe seus dados para realizar o login.\n");
             //Leitura do nome
-            System.out.println("Digite o nome: ");
+            System.out.println("Nome de usuário: ");
             String nome = input.nextLine();
 
             //Erro para caso o nome esteja vazio
@@ -49,7 +51,7 @@ public class Login {
             //Enquanto o login não for feito, o loop se repete
             while (!loginRealizado) {
                 //Leitura da senha
-                System.out.println("Digite a senha: ");
+                System.out.println("Senha: ");
                 String senha = input.nextLine();
                 //Erro para caso a senha esteja vazia ou tenha espaços
                 if (senha == null || senha.isEmpty() || senha.contains(" ")) {

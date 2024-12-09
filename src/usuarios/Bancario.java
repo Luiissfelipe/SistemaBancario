@@ -83,7 +83,7 @@ public class Bancario extends Usuario{
         //Verificando se é uma conta adicional
         if(contaEncontrada instanceof ContaCorrenteAdicional) {
             //Mostrando limite da conta adicional
-            System.out.printf("***Limite disponivel: R$ %.2f***\n", contaEncontrada.getSaldo());
+            System.out.printf("***Limite da Conta Adicional: R$ %.2f***\n", contaEncontrada.getSaldo());
         } else {
             //Mostrando saldo das outras contas
             System.out.printf("***Saldo disponivel: R$ %.2f***\n", contaEncontrada.getSaldo());

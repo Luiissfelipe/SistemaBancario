@@ -19,6 +19,8 @@ public class Main {
         //Carregando arquivo de contas
         SistemaBanco.carregarContas();
 
+        //Mensagem de inicio
+        System.out.println("Bem vindo(a) ao VaiNaFéBank\n");
         //Instanciando a classe de login
         Login login = new Login();
         //Chamando método para realizar login
